@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 const Home = async () => {
   const currentUser = await getCurrentUser();
+
   if (!currentUser) {
     redirect(SIGN_IN_PATH);
   }

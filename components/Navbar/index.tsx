@@ -4,7 +4,7 @@ import { SerializableUser } from "@/types";
 import Sort from "./Sort";
 import Match from "./Match";
 import UserNav from "./UserNav";
-import SearchDialog from "../SearchDialog";
+import SearchDialog from "../dogSearchModal/SearchDialog";
 
 interface NavbarProps {
   currentUser?: SerializableUser | null;
