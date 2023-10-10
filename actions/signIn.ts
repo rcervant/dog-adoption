@@ -13,6 +13,7 @@ const signIn = async (data: FieldValues) => {
   if (!FETCH_API_URL) throw new Error("No fetch api url");
 
   try {
+    // authenticate with the fetch
     const res = await fetch(`${FETCH_API_URL}/auth/login`, {
       method: "POST",
       credentials: "include",
@@ -27,6 +28,7 @@ const signIn = async (data: FieldValues) => {
       throw new Error(`Error in signIn: ${res.status} ${res.statusText}`);
     }
 
+    // get the cookies from the response and manually set them to client
     const fetchResponseCookies = res.headers.get("set-cookie");
     if (fetchResponseCookies === null) return NextResponse.error();
 
@@ -48,11 +50,18 @@ const signIn = async (data: FieldValues) => {
       expires: new Date(Date.now() + HOUR_IN_MS),
     });
 
+    // get the user from the db or create a new one if it doesn't exist
     const { email, name } = data as IDBUser;
+    const emailLowerCased = email.toLowerCase();
+
     const user = await prisma.user.upsert({
-      where: { email },
+      where: { email: emailLowerCased },
       update: { name, session: fetchSession },
-      create: { email, name, session: fetchSession },
+      create: {
+        email: emailLowerCased,
+        name,
+        session: fetchSession,
+      },
     });
 
     return user;

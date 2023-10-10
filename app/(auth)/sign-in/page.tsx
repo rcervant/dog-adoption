@@ -1,6 +1,14 @@
+import getCurrentUser from "@/actions/getCurrentUser";
 import SignInForm from "@/components/SignInForm";
+import { SEARCH_PATH } from "@/lib/constants";
+import { redirect } from "next/navigation";
 
 const SignInPage = async () => {
+  const currentUser = await getCurrentUser();
+  if (currentUser) {
+    redirect(SEARCH_PATH);
+  }
+
   return (
     <>
       <div className="z-50 flex flex-1 grow items-center justify-items-center overflow-y-auto overflow-x-hidden outline-none focus:outline-none">

@@ -7,24 +7,24 @@ import { SerializableUser } from "@/types";
 
 const getCurrentUser = async () => {
   try {
-    const fetchTokenValue = cookies().get(
-      process.env.NEXT_PUBLIC_FETCH_COOKIE_NAME ?? "",
-    )?.value;
+    const fetchCookieName = process.env.NEXT_PUBLIC_FETCH_COOKIE_NAME;
+    if (!fetchCookieName) return null;
 
+    const fetchTokenValue = cookies().get(fetchCookieName)?.value;
     if (!fetchTokenValue) return null;
 
     const userCredentials = getUserCredentialsFromCookieValue(fetchTokenValue);
     if (!userCredentials) return null;
 
     const { email } = userCredentials;
+    const emailLowerCased = email.toLowerCase();
 
     const currentUser = await prisma.user.findUnique({
-      where: { email },
+      where: { email: emailLowerCased },
       include: {
         favorites: true,
       },
     });
-
     if (!currentUser) return null;
 
     const serializedUser: SerializableUser = {
