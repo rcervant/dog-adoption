@@ -55,7 +55,10 @@ const SignInForm = () => {
 
   const onSubmit = async (userCredentials: z.infer<typeof formSchema>) => {
     try {
-      await signIn(userCredentials);
+      const res = await signIn(userCredentials) || null;
+      if (!res) {
+        throw new Error("Invalid credentials.");
+      }
 
       router.push(SEARCH_PATH);
       router.refresh();

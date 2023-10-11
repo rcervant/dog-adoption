@@ -10,7 +10,7 @@ const useBreedList = () => {
       setBreedList([]);
       setStatus("loading");
 
-      setBreedList(await getDogBreeds());
+      setBreedList(await getDogBreeds() || []);
       setStatus("loaded");
     };
 

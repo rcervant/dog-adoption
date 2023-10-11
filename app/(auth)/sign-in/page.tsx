@@ -3,10 +3,12 @@ import SignInForm from "@/components/SignInForm";
 import { SEARCH_PATH } from "@/lib/constants";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 const SignInPage = async () => {
-  const currentUser = await getCurrentUser();
+  const currentUser = await getCurrentUser() || null;
   if (currentUser) {
-    redirect(SEARCH_PATH);
+    return redirect(SEARCH_PATH);
   }
 
   return (

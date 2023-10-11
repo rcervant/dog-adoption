@@ -45,7 +45,11 @@ const UserNav = ({ currentUser }: UserNavProps) => {
   );
 
   const handleLogout = useCallback(async () => {
-    await signOut();
+    const res = await signOut() || null;
+    if (!res) {
+      throw new Error("Error logging out");
+    }
+    
     router.push(SIGN_IN_PATH);
     router.refresh();
   }, [router]);

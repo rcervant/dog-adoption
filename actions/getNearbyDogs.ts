@@ -8,20 +8,25 @@ import getDogIdsMetaDataFromParams from "./getDogIdsMetaDataFromParams";
 // TODO: add search user radius
 const getNearbyDogs = async (zipCode: string) => {
   try {
-    const currentUser = await getCurrentUser();
+    if (!zipCode) return [];
+
+    const currentUser = await getCurrentUser() || null;
     if (!currentUser) throw new Error("No current user");
 
-    const locationsMetadata = await getNearbyZipCodes({ zipCode });
+    const locationsMetadata = await getNearbyZipCodes({ zipCode }) || null;
+    if (!locationsMetadata) throw new Error(`Could not fetch locationsMetadata`);
 
     const { results } = locationsMetadata;
     const zipCodes = results.map((location) => location.zip_code);
+
+    if (zipCodes.length === 0) return [];
 
     const dogIdsMetadata = await getDogIdsMetaDataFromParams({
       searchParams: {
         zipCodes,
       },
       user: currentUser,
-    });
+    }) || null;
     if (!dogIdsMetadata) throw new Error(`Could not fetch dogIdsMetadata`);
 
     const { resultIds } = dogIdsMetadata;
@@ -30,7 +35,8 @@ const getNearbyDogs = async (zipCode: string) => {
     const data = await getDogsById({
       dogIdsToRetrieve: resultIds,
       user: currentUser,
-    });
+    }) || null;
+    if (!data) throw new Error(`Could not fetch data`);
 
     return data;
   } catch (error: any) {

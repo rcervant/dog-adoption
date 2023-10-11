@@ -11,8 +11,12 @@ const getDogsById = async (
   getDogIdsParams: IGetDogIdsParams,
 ): Promise<Dog[]> => {
   try {
+    if (!getDogIdsParams) throw new Error("No getDogIdsParams");
+    
     const { dogIdsToRetrieve, user } = getDogIdsParams;
+    if (!dogIdsToRetrieve) throw new Error("No dog ids to retrieve");
     if (!user) throw new Error("No current user");
+
 
     const idsToFetch = dogIdsToRetrieve || [];
     if (idsToFetch.length === 0) return [];
@@ -28,13 +32,16 @@ const getDogsById = async (
         "Content-Type": "application/json",
         Cookie: user.session,
       },
-    });
+    }) || null;
+
+    if (res === null) throw new Error("No response");
 
     if (!res.ok) {
       throw new Error(`Error in getDogsById: ${res.status} ${res.statusText}`);
     }
 
-    const data = (await res.json()) as Dog[];
+    const data = (await res.json()) as Dog[] || null;
+    if (!data) throw new Error("No data");
 
     return data;
   } catch (error: any) {

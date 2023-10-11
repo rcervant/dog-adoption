@@ -40,7 +40,7 @@ const useFavorite = ({ dogId, currentUser }: IUseFavorite) => {
 
     try {
       if (!hasFavorited) {
-        const res = await favoriteDog({ dogIdToFavorite: dogId });
+        const res = await favoriteDog({ dogIdToFavorite: dogId }) || null;
         if (!res) {
           throw new Error("Something went wrong.");
         }
@@ -54,7 +54,7 @@ const useFavorite = ({ dogId, currentUser }: IUseFavorite) => {
           description: "You can view your favorites on your profile page.",
         });
       } else {
-        const res = await unfavoriteDog({ dogIdToUnfavorite: dogId });
+        const res = await unfavoriteDog({ dogIdToUnfavorite: dogId }) || null;
         if (!res) {
           throw new Error("Something went wrong.");
         }

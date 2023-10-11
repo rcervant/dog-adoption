@@ -34,7 +34,7 @@ const InfiniteScrollDogs = ({
 
   const updateDogsFromSearch = useCallback(async () => {
     if (!user) {
-      await signOut();
+      const res = await signOut() || null;
       return null;
     }
 
@@ -82,7 +82,7 @@ const InfiniteScrollDogs = ({
       const nextPageDogIdsMetadata = (await getDogIdsMetaDataFromParams({
         searchParams: nextSearchParamsObj,
         user,
-      })) as DogIdsMetadata;
+      })) as DogIdsMetadata || null;
 
       if (!nextPageDogIdsMetadata) {
         throw new Error("Couldn't fetch dog ids from server");
@@ -95,7 +95,7 @@ const InfiniteScrollDogs = ({
         setNext(nextPageDogIdsMetadata.next);
 
         const { resultIds } = nextPageDogIdsMetadata;
-        const dogs = await getDogsById({ dogIdsToRetrieve: resultIds, user });
+        const dogs = await getDogsById({ dogIdsToRetrieve: resultIds, user }) || null;
 
         if (!dogs) {
           throw new Error("Couldn't fetch dogs from server");

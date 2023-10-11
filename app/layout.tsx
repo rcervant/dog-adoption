@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
+  if (!children) throw new Error("No children found");
   return (
     <html lang="en">
       <body>

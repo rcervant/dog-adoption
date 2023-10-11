@@ -22,7 +22,9 @@ const signIn = async (data: FieldValues) => {
       },
       body: JSON.stringify(data),
       cache: "no-store",
-    });
+    }) || null;
+
+    if (res === null) throw new Error("No response");
 
     if (!res.ok) {
       throw new Error(`Error in signIn: ${res.status} ${res.statusText}`);
@@ -38,7 +40,7 @@ const signIn = async (data: FieldValues) => {
     const fetchSession = await getCookieString({
       stringToSearchThrough: fetchResponseCookies,
       stringToSearchFor: fetchCookieName,
-    });
+    }) || null;
     if (!fetchSession) throw new Error("No fetch session");
 
     const [cookieName, cookieValue] = fetchSession.split("=");
@@ -62,7 +64,8 @@ const signIn = async (data: FieldValues) => {
         name,
         session: fetchSession,
       },
-    });
+    }) || null;
+    if (!user) throw new Error("No user")
 
     return user;
   } catch (error: any) {

@@ -21,13 +21,15 @@ const getNearbyZipCodes = async ({
   if (!ORIGIN) throw new Error("No origin");
 
   try {
-    const currentUser = await getCurrentUser();
-    if (!currentUser) throw new Error("No current user");
+    const currentUser = await getCurrentUser() || null;
+    if (!currentUser) return null;
 
     const boundingBox = await getGeoBoundBoxFromZipCode({
       zipCode,
       searchRadius,
-    });
+    }) || null;
+
+    if (!boundingBox) return null;
 
     const geoBoundingBoxToSend = {
       geoBoundingBox: {
@@ -44,7 +46,9 @@ const getNearbyZipCodes = async ({
         Cookie: currentUser.session,
       },
       body: JSON.stringify(geoBoundingBoxToSend),
-    });
+    }) || null;
+
+    if (res === null) throw new Error("No response");
 
     if (!res.ok) {
       throw new Error(
@@ -52,7 +56,7 @@ const getNearbyZipCodes = async ({
       );
     }
 
-    const data = (await res.json()) as FetchLocationMetdata;
+    const data = (await res.json()) as FetchLocationMetdata || null;
     return data;
   } catch (error: any) {
     throw new Error(error);

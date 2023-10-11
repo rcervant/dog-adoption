@@ -7,6 +7,8 @@ import { useCallback } from "react";
 import useSort from "@/hooks/useSort";
 import { ASCENDING, DESCENDING } from "@/lib/constants";
 import { SlidersHorizontal } from "lucide-react";
+import { revalidatePath } from 'next/cache';
+import revalidateSort from '@/actions/revalidateSort';
 
 const Sort = () => {
   const router = useRouter();
@@ -25,16 +27,17 @@ const Sort = () => {
     [searchParams],
   );
 
+  // const handleSort = async () => {
   const handleSort = () => {
     let currSort = searchParams.get("sort") || `${field}:${sortOrder}`;
     const [currField, currOrder] = currSort.split(":");
-    console.log({ currField, currOrder });
 
-    const query = createQueryString("sort", `${field}:${sortOrder}`);
     const newSortOrder = sortOrder === DESCENDING ? ASCENDING : DESCENDING;
     setSortOrder(newSortOrder);
+    const query = createQueryString("sort", `breed:${newSortOrder}`);
 
     router.push(`${url}?${query}`);
+    // await revalidateSort(); 
     router.refresh();
   };
 

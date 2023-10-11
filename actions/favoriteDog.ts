@@ -10,7 +10,7 @@ interface IFavoriteDog {
 
 export const favoriteDog = async ({ dogIdToFavorite }: IFavoriteDog) => {
   try {
-    const currentUser = await getCurrentUser();
+    const currentUser = await getCurrentUser() || null;
     if (!currentUser) return null;
 
     const favorites = [...(currentUser.favorites || [])];
@@ -20,7 +20,7 @@ export const favoriteDog = async ({ dogIdToFavorite }: IFavoriteDog) => {
         userId: currentUser.id,
         dogId: dogIdToFavorite,
       },
-    });
+    }) || null;
 
     if (existingFavorite) {
       return { message: "dog has already been favorited" };
@@ -31,7 +31,9 @@ export const favoriteDog = async ({ dogIdToFavorite }: IFavoriteDog) => {
         dogId: dogIdToFavorite,
         userId: currentUser.id,
       },
-    });
+    }) || null;
+
+    if (!newFavorite) throw new Error("Could not create new favorite");
 
     const serializedNewFavorite: SerializableFavorite = {
       ...newFavorite,
@@ -54,7 +56,8 @@ export const favoriteDog = async ({ dogIdToFavorite }: IFavoriteDog) => {
           })),
         },
       },
-    });
+    }) || null;
+    if (!user) throw new Error("Could not update user");
 
     return { message: "dog has been favorited successfully" };
   } catch (error: any) {

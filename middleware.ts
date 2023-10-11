@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Limit the middleware to paths starting with `/api/`
+// allow all paths
+
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/"],
+  matcher: "/((?!api|_next/static|_next/image|favicon.ico|search|sign-in).*)",
 };
 
-// currently unused, will be used later for auth and a/b testing at edge
 export function middleware(request: NextRequest) {
   return NextResponse.next();
 }

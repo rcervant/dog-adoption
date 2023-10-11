@@ -5,6 +5,7 @@ interface AuthLayoutProps {
 }
 
 const AuthLayout = async ({ children }: AuthLayoutProps) => {
+  if (!children) throw new Error("No children found");
   return (
     <main className="fetch-mesh flex h-screen items-center">{children}</main>
   );

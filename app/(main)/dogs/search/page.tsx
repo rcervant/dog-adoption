@@ -4,7 +4,7 @@ import getDogsById from "@/actions/getDogsById";
 import Container from "@/components/Container";
 import InfiniteScrollDogs from "@/components/Dogs/InfiniteScrollDogs";
 import EmptyState from "@/components/EmptyState";
-import { SIGN_IN_PATH } from "@/lib/constants";
+import { ASCENDING, SIGN_IN_PATH } from "@/lib/constants";
 import { DogIdsMetadata } from "@/types";
 
 import { redirect } from "next/navigation";
@@ -14,8 +14,12 @@ interface SearchProps {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-const DogSearchPage = async ({ searchParams }: SearchProps) => {
-  const currentUser = await getCurrentUser();
+export const dynamic = "force-dynamic";
+
+const DogSearchPage = async ({ searchParams = { sort: ASCENDING } }: SearchProps) => {
+  if (!searchParams) throw new Error("No search params found");
+
+  const currentUser = await getCurrentUser() || null;
   if (!currentUser) {
     <EmptyState title="You have been logged out. Redirecting to sign in" />;
     return redirect(`${process.env.ORIGIN}${SIGN_IN_PATH}`);
@@ -24,21 +28,19 @@ const DogSearchPage = async ({ searchParams }: SearchProps) => {
   const dogIdsMetadata = (await getDogIdsMetaDataFromParams({
     searchParams,
     user: currentUser,
-  })) as DogIdsMetadata;
+  })) || null;
 
-  if (!dogIdsMetadata) {
-    throw new Error("No dog ids found");
-  }
+  if (!dogIdsMetadata) throw new Error("No dog ids found");
 
   const { resultIds } = dogIdsMetadata;
+  if (!resultIds) throw new Error("No dog ids found");
+
   const dogs = await getDogsById({
     dogIdsToRetrieve: resultIds,
     user: currentUser,
-  });
+  }) || null;
 
-  if (!dogs) {
-    throw new Error("No dogs found");
-  }
+  if (!dogs) throw new Error("No dogs found");
 
   if (dogs.length === 0) {
     return <EmptyState showReset />;

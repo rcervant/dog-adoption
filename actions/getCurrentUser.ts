@@ -17,6 +17,8 @@ const getCurrentUser = async () => {
     if (!userCredentials) return null;
 
     const { email } = userCredentials;
+    if (!email) return null;
+    
     const emailLowerCased = email.toLowerCase();
 
     const currentUser = await prisma.user.findUnique({
@@ -24,7 +26,7 @@ const getCurrentUser = async () => {
       include: {
         favorites: true,
       },
-    });
+    }) || null;
     if (!currentUser) return null;
 
     const serializedUser: SerializableUser = {
