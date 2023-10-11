@@ -12,17 +12,18 @@ const signOut = async () => {
   if (!ORIGIN) throw new Error("No origin");
 
   try {
-    const currentUser = await getCurrentUser() || null;
+    const currentUser = (await getCurrentUser()) || null;
     if (!currentUser) return redirect(`${ORIGIN}/sign-in`);
 
-    const res = await fetch(`${FETCH_API_URL}/auth/logout`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: currentUser.session,
-      },
-    }) || null;
+    const res =
+      (await fetch(`${FETCH_API_URL}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: currentUser.session,
+        },
+      })) || null;
 
     if (res === null) throw new Error("No response");
 

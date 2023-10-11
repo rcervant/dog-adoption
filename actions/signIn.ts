@@ -14,15 +14,16 @@ const signIn = async (data: FieldValues) => {
 
   try {
     // authenticate with the fetch
-    const res = await fetch(`${FETCH_API_URL}/auth/login`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-      cache: "no-store",
-    }) || null;
+    const res =
+      (await fetch(`${FETCH_API_URL}/auth/login`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        cache: "no-store",
+      })) || null;
 
     if (res === null) throw new Error("No response");
 
@@ -37,10 +38,11 @@ const signIn = async (data: FieldValues) => {
     const fetchCookieName = process.env.NEXT_PUBLIC_FETCH_COOKIE_NAME;
     if (!fetchCookieName) throw new Error("No fetch cookie");
 
-    const fetchSession = await getCookieString({
-      stringToSearchThrough: fetchResponseCookies,
-      stringToSearchFor: fetchCookieName,
-    }) || null;
+    const fetchSession =
+      (await getCookieString({
+        stringToSearchThrough: fetchResponseCookies,
+        stringToSearchFor: fetchCookieName,
+      })) || null;
     if (!fetchSession) throw new Error("No fetch session");
 
     const [cookieName, cookieValue] = fetchSession.split("=");
@@ -56,16 +58,17 @@ const signIn = async (data: FieldValues) => {
     const { email, name } = data as IDBUser;
     const emailLowerCased = email.toLowerCase();
 
-    const user = await prisma.user.upsert({
-      where: { email: emailLowerCased },
-      update: { name, session: fetchSession },
-      create: {
-        email: emailLowerCased,
-        name,
-        session: fetchSession,
-      },
-    }) || null;
-    if (!user) throw new Error("No user")
+    const user =
+      (await prisma.user.upsert({
+        where: { email: emailLowerCased },
+        update: { name, session: fetchSession },
+        create: {
+          email: emailLowerCased,
+          name,
+          session: fetchSession,
+        },
+      })) || null;
+    if (!user) throw new Error("No user");
 
     return user;
   } catch (error: any) {

@@ -16,29 +16,33 @@ interface SearchProps {
 
 export const dynamic = "force-dynamic";
 
-const DogSearchPage = async ({ searchParams = { sort: ASCENDING } }: SearchProps) => {
+const DogSearchPage = async ({
+  searchParams = { sort: ASCENDING },
+}: SearchProps) => {
   if (!searchParams) throw new Error("No search params found");
 
-  const currentUser = await getCurrentUser() || null;
+  const currentUser = (await getCurrentUser()) || null;
   if (!currentUser) {
     <EmptyState title="You have been logged out. Redirecting to sign in" />;
     return redirect(`${process.env.ORIGIN}${SIGN_IN_PATH}`);
   }
 
-  const dogIdsMetadata = (await getDogIdsMetaDataFromParams({
-    searchParams,
-    user: currentUser,
-  })) || null;
+  const dogIdsMetadata =
+    (await getDogIdsMetaDataFromParams({
+      searchParams,
+      user: currentUser,
+    })) || null;
 
   if (!dogIdsMetadata) throw new Error("No dog ids found");
 
   const { resultIds } = dogIdsMetadata;
   if (!resultIds) throw new Error("No dog ids found");
 
-  const dogs = await getDogsById({
-    dogIdsToRetrieve: resultIds,
-    user: currentUser,
-  }) || null;
+  const dogs =
+    (await getDogsById({
+      dogIdsToRetrieve: resultIds,
+      user: currentUser,
+    })) || null;
 
   if (!dogs) throw new Error("No dogs found");
 

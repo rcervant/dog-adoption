@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 const SignInPage = async () => {
-  const currentUser = await getCurrentUser() || null;
+  const currentUser = (await getCurrentUser()) || null;
   if (currentUser) {
     return redirect(SEARCH_PATH);
   }

@@ -8,7 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "test": "vitest"
+    "test": "vitest",
+    "start-db": "docker run --name my_db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -v ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql mysql",
+    "db:init": "chmod +x ./scripts/db-init.sh && ./scripts/db-init.sh",
+    "db:init-win": "./scripts/db-init.ps1",
+    "prisma:init": "chmod +x ./scripts/prisma-init.sh && ./scripts/prisma-init.sh"
+
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",

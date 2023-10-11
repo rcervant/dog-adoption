@@ -1,17 +1,100 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
 
 ```bash
+npm i
+```
+
+next: run the development server:
+Options:
+
+- Local: run the app locally with a mysql database running on docker (recommended)
+### Local Setup with Docker
+Important: You will need to install docker desktop (macOS/windows) or docker engine (linux)
+
+run the following command in a new terminal to initialize the 
+docker container with the mysql database
+macOS/linux
+```bash
+npm run db:init
+```
+
+windows
+```bash
+npm run db:init-win
+```
+
+You now have a mysql DATABASE running on docker with the following credentials:
+```bash
+db name: my_db
+db password: password
+port exposed: 3306
+```
+
+### connect to the database with Prisma
+next in a new terminal run the following command to connect to the database with prisma
+```bash
+npx prisma migrate dev
+```bash
+npm run setup
+```
+
+
+
+- Local: run the app locally with a mysql database running on a cloud provider 
+--- [PlanetScale](https://planetscale.com/docs/tutorials/planetscale-quick-start-guide). (recommended: planetscale will handle migrations for you)
+--- [Railway](https://docs.railway.app/databases/mysql).
+
+- a few files are needed before running the app:
+  - .env.local: Nextjs specific environment variables needed to run the app
+  - .env: prisma looks for this file to get the database url
+
+.env.local
+```bash
+NEXT_PUBLIC_ORIGIN = "http://localhost:3000"
+NEXT_PUBLIC_FETCH_COOKIE_NAME=
+NEXT_PUBLIC_FETCH_API_URL=
+```
+
+.env
+```bash
+DATABASE_URL=
+```
+
+If you decided to run the app locally with a mysql database running on docker, you will need to install docker desktop (macOS/windows) or docker engine (linux)
+
+run the following command to initialize the docker container with the mysql database
+macOS/linux
+```bash
+npm run db:init
+```
+windows
+```bash
+npm run db:init-win
+```
+
+You now have a mysql DATABASE running on docker with the following credentials:
+```bash
+
+
+```
+
+```bash
+npm run setup
+```
+
+```bash
+npm run
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+
+- Docker: spin up a docker container with the app and a mysql database
+
+```bash
+docker-compose up
+
+
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

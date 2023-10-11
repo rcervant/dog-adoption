@@ -9,14 +9,14 @@ import { redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 const DogMatchPage = async () => {
-  const currentUser = await getCurrentUser() || null;
+  const currentUser = (await getCurrentUser()) || null;
 
   if (!currentUser) {
     <EmptyState title="You have been logged out. Redirecting to sign in" />;
     return redirect(`${process.env.ORIGIN}${SIGN_IN_PATH}`);
   }
 
-  const dogMatch = (await getDogMatch()) as Dog || null;
+  const dogMatch = ((await getDogMatch()) as Dog) || null;
   if (!dogMatch) throw new Error("No dog match found");
 
   if (Object.keys(dogMatch).length === 0) {

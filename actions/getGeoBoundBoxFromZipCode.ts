@@ -23,18 +23,19 @@ const getGeoBoundBoxFromZipCode = async ({
   if (!ORIGIN) throw new Error("No origin");
 
   try {
-    const currentUser = await getCurrentUser() || null;
+    const currentUser = (await getCurrentUser()) || null;
     if (!currentUser) redirect(`${ORIGIN}${SIGN_IN_PATH}`);
 
-    const res = await fetch(`${FETCH_API_URL}/locations`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: currentUser.session,
-      },
-      body: JSON.stringify([zipCode]),
-    }) || null;
+    const res =
+      (await fetch(`${FETCH_API_URL}/locations`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: currentUser.session,
+        },
+        body: JSON.stringify([zipCode]),
+      })) || null;
 
     if (res === null) throw new Error("No response");
 
@@ -44,7 +45,7 @@ const getGeoBoundBoxFromZipCode = async ({
       );
     }
 
-    const [location] = (await res.json()) as FetchLocation[] || null;
+    const [location] = ((await res.json()) as FetchLocation[]) || null;
     if (!location) throw new Error("No location");
 
     const { latitude, longitude } = location;
@@ -55,7 +56,8 @@ const getGeoBoundBoxFromZipCode = async ({
     } as GeoPoint;
 
     const radiusKm = searchRadius;
-    const boundingBox = await calculateBoundingBox(centerLocation, radiusKm) || null;
+    const boundingBox =
+      (await calculateBoundingBox(centerLocation, radiusKm)) || null;
     if (!boundingBox) throw new Error("No bounding box");
 
     return boundingBox;

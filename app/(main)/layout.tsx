@@ -9,8 +9,8 @@ interface SearchLayoutProps {
 
 const SearchLayout = async ({ children }: SearchLayoutProps) => {
   if (!children) throw new Error("No children found");
-  
-  const currentUser = await getCurrentUser() || null;
+
+  const currentUser = (await getCurrentUser()) || null;
   if (!currentUser) {
     return redirect(SIGN_IN_PATH);
   }

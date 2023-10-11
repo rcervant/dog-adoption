@@ -1,6 +1,6 @@
 "use server";
 
-import { ASCENDING } from '@/lib/constants';
+import { ASCENDING } from "@/lib/constants";
 import { getQueryFromSearchParams } from "@/lib/server/utils";
 import { DogIdsMetadata, IDogSearchParams, SerializableUser } from "@/types";
 
@@ -15,26 +15,26 @@ const getDogIdsMetaDataFromParams = async (
   try {
     if (!dogIdSearchParams) throw new Error("No dogIdSearchParams");
 
-    const { searchParams = {sort: ASCENDING}, user } = dogIdSearchParams;
+    const { searchParams = { sort: ASCENDING }, user } = dogIdSearchParams;
     if (!user) throw new Error("No current user");
     if (!searchParams) throw new Error("No search params");
 
-    const query = await getQueryFromSearchParams(searchParams) || "";
+    const query = (await getQueryFromSearchParams(searchParams)) || "";
 
     const FETCH_API_URL = process.env.NEXT_PUBLIC_FETCH_API_URL;
     if (!FETCH_API_URL) throw new Error("No fetch api url");
 
     const url = `${FETCH_API_URL}/dogs/search?${query}`;
-    console.log(url)
 
-    const res = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: user.session,
-      },
-    }) || null;
+    const res =
+      (await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: user.session,
+        },
+      })) || null;
 
     if (res === null) throw new Error("No response");
 
@@ -44,7 +44,7 @@ const getDogIdsMetaDataFromParams = async (
       );
     }
 
-    const data = (await res.json()) as DogIdsMetadata || null;
+    const data = ((await res.json()) as DogIdsMetadata) || null;
     if (!data) throw new Error("No data");
 
     return data;

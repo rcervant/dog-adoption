@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 const Home = async () => {
-  const currentUser = await getCurrentUser() || null;
+  const currentUser = (await getCurrentUser()) || null;
 
   if (!currentUser) {
     return redirect(SIGN_IN_PATH);

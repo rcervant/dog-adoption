@@ -18,22 +18,23 @@ const DogPage = async ({ params }: DogPageParams) => {
   const { dogId } = params;
   if (!dogId) throw new Error("No dog id found");
 
-  const currentUser = await getCurrentUser() || null;
+  const currentUser = (await getCurrentUser()) || null;
   if (!currentUser) {
     <EmptyState title="You have been logged out. Redirecting to sign in" />;
     return redirect(`${process.env.ORIGIN}${SIGN_IN_PATH}`);
   }
 
-  const [dog] = await getDogsById({
-    dogIdsToRetrieve: [dogId],
-    user: currentUser,
-  }) || null;
+  const [dog] =
+    (await getDogsById({
+      dogIdsToRetrieve: [dogId],
+      user: currentUser,
+    })) || null;
 
   if (!dog) {
     throw new Error("No dog found");
   }
 
-  const nearbyDogs = await getNearbyDogs(dog.zip_code) || null;
+  const nearbyDogs = (await getNearbyDogs(dog.zip_code)) || null;
   if (!nearbyDogs) {
     <EmptyState title="No nearby dogs found" />;
   }

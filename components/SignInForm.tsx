@@ -55,7 +55,7 @@ const SignInForm = () => {
 
   const onSubmit = async (userCredentials: z.infer<typeof formSchema>) => {
     try {
-      const res = await signIn(userCredentials) || null;
+      const res = (await signIn(userCredentials)) || null;
       if (!res) {
         throw new Error("Invalid credentials.");
       }

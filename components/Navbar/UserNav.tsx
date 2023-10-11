@@ -45,7 +45,7 @@ const UserNav = ({ currentUser }: UserNavProps) => {
   );
 
   const handleLogout = useCallback(async () => {
-    const res = await signOut() || null;
+    const res = (await signOut()) || null;
     if (!res) {
       throw new Error("Error logging out");
     }
