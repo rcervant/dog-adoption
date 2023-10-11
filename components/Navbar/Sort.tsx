@@ -27,17 +27,13 @@ const Sort = () => {
     [searchParams],
   );
 
-  // const handleSort = async () => {
   const handleSort = () => {
-    let currSort = searchParams.get("sort") || `${field}:${sortOrder}`;
-    const [currField, currOrder] = currSort.split(":");
-
     const newSortOrder = sortOrder === DESCENDING ? ASCENDING : DESCENDING;
     setSortOrder(newSortOrder);
+
     const query = createQueryString("sort", `breed:${newSortOrder}`);
 
     router.push(`${url}?${query}`);
-    // await revalidateSort(); 
     router.refresh();
   };
 

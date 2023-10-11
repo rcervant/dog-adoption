@@ -30,7 +30,7 @@ interface UserNavProps {
 
 const UserNav = ({ currentUser }: UserNavProps) => {
   const router = useRouter();
-  const pathname = usePathname();
+  const url = usePathname();
   const searchParams = useSearchParams();
   const { field, sortOrder, setSortOrder } = useSort();
 
@@ -49,20 +49,19 @@ const UserNav = ({ currentUser }: UserNavProps) => {
     if (!res) {
       throw new Error("Error logging out");
     }
-    
+
     router.push(SIGN_IN_PATH);
     router.refresh();
   }, [router]);
 
   const handleSort = () => {
-    setSortOrder(sortOrder === ASCENDING ? DESCENDING : ASCENDING);
-    router.push(
-      `${pathname}?${
-        sortOrder === ASCENDING
-          ? createQueryString("sort", ASCENDING)
-          : createQueryString("sort", DESCENDING)
-      }`,
-    );
+    const newSortOrder = sortOrder === DESCENDING ? ASCENDING : DESCENDING;
+    setSortOrder(newSortOrder);
+
+    const query = createQueryString("sort", `breed:${newSortOrder}`);
+
+    router.push(`${url}?${query}`);
+    router.refresh();
   };
 
   const getInitials = useCallback((name: string) => {
