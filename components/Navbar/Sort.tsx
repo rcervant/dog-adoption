@@ -1,14 +1,11 @@
 "use client";
 
-import { BsSliders } from "react-icons/bs";
 import ButtonWithIcon from "../ButtonWithIcon";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import useSort from "@/hooks/useSort";
 import { ASCENDING, DESCENDING } from "@/lib/constants";
 import { SlidersHorizontal } from "lucide-react";
-import { revalidatePath } from 'next/cache';
-import revalidateSort from '@/actions/revalidateSort';
 
 const Sort = () => {
   const router = useRouter();
