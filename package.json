@@ -8,12 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "test": "vitest",
-    "start-db": "docker run --name my_db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -v ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql mysql",
-    "db:init": "chmod +x ./scripts/db-init.sh && ./scripts/db-init.sh",
-    "db:init-win": "./scripts/db-init.ps1",
-    "prisma:init": "chmod +x ./scripts/prisma-init.sh && ./scripts/prisma-init.sh"
-
+    "test": "vitest"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
@@ -42,6 +37,7 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.11.0",
     "react-intersection-observer": "^9.5.2",
+    "react-spinners": "^0.13.8",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4",
