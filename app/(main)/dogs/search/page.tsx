@@ -5,8 +5,6 @@ import Container from "@/components/Container";
 import InfiniteScrollDogs from "@/components/Dogs/InfiniteScrollDogs";
 import EmptyState from "@/components/EmptyState";
 import { ASCENDING, SIGN_IN_PATH } from "@/lib/constants";
-import { DogIdsMetadata } from "@/types";
-
 import { redirect } from "next/navigation";
 
 interface SearchProps {
@@ -23,7 +21,6 @@ const DogSearchPage = async ({
 
   const currentUser = (await getCurrentUser()) || null;
   if (!currentUser) {
-    <EmptyState title="You have been logged out. Redirecting to sign in" />;
     return redirect(`${process.env.ORIGIN}${SIGN_IN_PATH}`);
   }
 
@@ -33,10 +30,13 @@ const DogSearchPage = async ({
       user: currentUser,
     })) || null;
 
-  if (!dogIdsMetadata) throw new Error("No dog ids found");
+  if (!dogIdsMetadata) throw new Error("Id metadata not found");
 
   const { resultIds } = dogIdsMetadata;
   if (!resultIds) throw new Error("No dog ids found");
+  if (resultIds.length === 0) {
+    return <EmptyState showReset />;
+  }
 
   const dogs =
     (await getDogsById({
@@ -44,20 +44,22 @@ const DogSearchPage = async ({
       user: currentUser,
     })) || null;
 
-  if (!dogs) throw new Error("No dogs found");
-
-  if (dogs.length === 0) {
-    return <EmptyState showReset />;
-  }
+  if (!dogs) throw new Error("No dogs retrieved");
 
   return (
-    <Container>
-      <InfiniteScrollDogs
-        initialDogs={dogs}
-        initialDogIdsMetadata={dogIdsMetadata}
-        user={currentUser}
-      />
-    </Container>
+    <>
+      {dogs.length !== 0 ? (
+        <Container>
+          <InfiniteScrollDogs
+            initialDogs={dogs}
+            initialDogIdsMetadata={dogIdsMetadata}
+            user={currentUser}
+          />
+        </Container>
+      ) : (
+        <EmptyState showReset />
+      )}
+    </>
   );
 };
 
