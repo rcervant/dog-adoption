@@ -13,6 +13,9 @@ const getDogMatch = async () => {
     if (!favoriteDogs) throw new Error(`Could not fetch favoriteDogs`);
 
     const favoriteDogIds = favoriteDogs.map((favorite) => favorite.id);
+    if (!favoriteDogIds) throw new Error(`Could not fetch favoriteDogIds`);
+
+    if (favoriteDogIds.length === 0) return [];
 
     const FETCH_API_URL = process.env.NEXT_PUBLIC_FETCH_API_URL;
     if (!FETCH_API_URL) throw new Error("No fetch api url");

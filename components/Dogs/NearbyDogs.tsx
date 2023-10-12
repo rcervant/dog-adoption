@@ -12,6 +12,10 @@ interface NearbyDogsProps {
 
 const NearbyDogs = ({ nearbyDogs, currentUser }: NearbyDogsProps) => {
   const params = useParams();
+  const currDogOnPageId = params.dogId;
+  const nearbyDogsFiltered = nearbyDogs?.filter(
+    (dog) => dog.id !== currDogOnPageId,
+  );
 
   return (
     <Container>
@@ -26,14 +30,12 @@ const NearbyDogs = ({ nearbyDogs, currentUser }: NearbyDogsProps) => {
       <hr />
       <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
         {Array.from({ length: NUM_DOGS_TO_DISPLAY }).map((_, i) =>
-          i < nearbyDogs.length ? (
-            params.dogId !== nearbyDogs[i].id ? (
+          i < nearbyDogsFiltered.length ? (
               <DogCard
-                key={nearbyDogs[i].id}
-                data={nearbyDogs[i]}
+                key={nearbyDogsFiltered[i].id}
+                data={nearbyDogsFiltered[i]}
                 currentUser={currentUser}
               />
-            ) : null
           ) : null,
         )}
       </div>
