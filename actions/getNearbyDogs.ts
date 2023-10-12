@@ -18,9 +18,9 @@ const getNearbyDogs = async (zipCode: string) => {
       throw new Error(`Could not fetch locationsMetadata`);
 
     const { results } = locationsMetadata;
-    const zipCodes = results.map((location) => location.zip_code);
+    if (results.length === 0) return [];
 
-    if (zipCodes.length === 0) return [];
+    const zipCodes = results.map((location) => location.zip_code);
 
     const dogIdsMetadata =
       (await getDogIdsMetaDataFromParams({
