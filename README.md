@@ -6,9 +6,6 @@
   <p align="center">
     <a href="https://fetch-take-home-rcervant.vercel.app/"><strong>Product Website »</strong></a>
     <br><br>
-    <a href="https://github.com/rcervant/fetch-take-home">
-      <img src="https://img.shields.io/badge/license-MIT-blue"/>
-    </a>
     <a href="https://github.com/rcervant/fetch-take-home/issues">
       <img alt="GitHub issues" src="https://img.shields.io/github/issues/rcervant/fetch-take-home">
     </a>
@@ -27,7 +24,6 @@
 - [About the Dog Matching App](#about)
 - [Features](#features)
 - [Getting Started](#getting-started)
-
 
 ---
 
@@ -67,7 +63,7 @@ Save your favorite dogs to a personalized list for easy access. Our app stores y
 
 ### Intelligent Matchmaking 🧡
 
-Our advanced matching algorithm considers your preferred pups and finds the perfect dog for you. 
+Our advanced matching algorithm considers your preferred pups and finds the perfect dog for you.
 
 ### Nearby Dogs 🌍
 
@@ -98,15 +94,19 @@ Before running the app, you'll need to set up a few configuration files:
 Create duplicate copies of **`.env.template`** and name them **`.env.local`** and **`.env`**. Fill in the required information in these files.
 
 #### .env.local
+
 ```bash
 NEXT_PUBLIC_ORIGIN = "http://localhost:3000"
 NEXT_PUBLIC_FETCH_COOKIE_NAME=<FOUND IN EXERCISE INSTRUCTIONS>
 NEXT_PUBLIC_FETCH_API_URL=<FOUND IN EXERCISE INSTRUCTIONS>
 ```
+
 #### .env
+
 ```bash
 DATABASE_URL=
 ```
+
 ### 2. Setting Up the Database
 
 You have two options for setting up the database:
@@ -118,10 +118,13 @@ You have two options for setting up the database:
 - Run the following command in a new terminal to initialize the Docker container with a MySQL database:
 
 **macOS/Linux**
+
 ```bash
   npm run db:init
 ```
-   **Windows**
+
+**Windows**
+
 ```bash
   npm run db:init-win
 ```
@@ -133,9 +136,11 @@ Now, you have a MySQL database running in a Docker container with the following 
 - Port exposed: 3306
 
 To connect to the database with Prisma, run the following command in a new terminal:
+
 ```bash
 npm run prisma:init
 ```
+
 #### [2] Local Setup with a Cloud Provider
 
 You can also run the app locally with a MySQL database provided by a cloud service like [PlanetScale](https://planetscale.com/docs/tutorials/planetscale-quick-start-guide) or [Railway](https://docs.railway.app/databases/mysql). Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by the cloud provider.
@@ -147,9 +152,11 @@ npm run prisma:init
 ### 3. Running the App
 
 You're now ready to run the app:
+
 ```bash
 npm run dev
 ```
+
 The app will be accessible at [http://localhost:3000](http://localhost:3000/) in your web browser.
 
 ---
