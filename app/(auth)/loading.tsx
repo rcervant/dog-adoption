@@ -11,8 +11,3 @@ const AuthPageLoadingSkeleton = () => {
 };
 
 export default AuthPageLoadingSkeleton;
-{
-  /* <div></div>
-);
-} */
-}
