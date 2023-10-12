@@ -31,11 +31,11 @@ const NearbyDogs = ({ nearbyDogs, currentUser }: NearbyDogsProps) => {
       <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
         {Array.from({ length: NUM_DOGS_TO_DISPLAY }).map((_, i) =>
           i < nearbyDogsFiltered.length ? (
-              <DogCard
-                key={nearbyDogsFiltered[i].id}
-                data={nearbyDogsFiltered[i]}
-                currentUser={currentUser}
-              />
+            <DogCard
+              key={nearbyDogsFiltered[i].id}
+              data={nearbyDogsFiltered[i]}
+              currentUser={currentUser}
+            />
           ) : null,
         )}
       </div>
