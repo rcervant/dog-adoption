@@ -1,6 +1,6 @@
 <p align="center">
   <a href="">
-    <img src="./images/logo.webp" alt="Logo" width="400">
+    <img src="./public/images/logo-color.png" alt="Logo" width="200">
   </a>
   <h4 align="center">Intuitive, customizable Dog Matching App</h4>
   <p align="center">
