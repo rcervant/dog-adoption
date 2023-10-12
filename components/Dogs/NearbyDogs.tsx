@@ -3,6 +3,7 @@ import Container from "@/components/Container";
 import DogCard from "@/components/Dogs/DogCard";
 import { Dog, SerializableUser } from "../../types";
 import { NUM_DOGS_TO_DISPLAY } from "@/lib/constants";
+import { useParams } from "next/navigation";
 
 interface NearbyDogsProps {
   nearbyDogs: Dog[];
@@ -10,6 +11,8 @@ interface NearbyDogsProps {
 }
 
 const NearbyDogs = ({ nearbyDogs, currentUser }: NearbyDogsProps) => {
+  const params = useParams();
+
   return (
     <Container>
       <hr />
@@ -22,13 +25,17 @@ const NearbyDogs = ({ nearbyDogs, currentUser }: NearbyDogsProps) => {
       </div>
       <hr />
       <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
-        {Array.from({ length: NUM_DOGS_TO_DISPLAY }).map((_, i) => (
-          <DogCard
-            key={nearbyDogs[i].id}
-            data={nearbyDogs[i]}
-            currentUser={currentUser}
-          />
-        ))}
+        {Array.from({ length: NUM_DOGS_TO_DISPLAY }).map((_, i) =>
+          i < nearbyDogs.length ? (
+            params.dogId !== nearbyDogs[i].id ? (
+              <DogCard
+                key={nearbyDogs[i].id}
+                data={nearbyDogs[i]}
+                currentUser={currentUser}
+              />
+            ) : null
+          ) : null,
+        )}
       </div>
     </Container>
   );
