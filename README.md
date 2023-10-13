@@ -111,7 +111,10 @@ DATABASE_URL=
 
 You have two options for setting up the database:
 
-#### [1] Local Setup with Docker
+1. [Local DB Setup with Docker (recommended)](#local-setup-with-docker)
+2. [Cloud DB Setup](#cloud-db-setup)
+
+#### [1] Local Setup with Docker <a name="local-setup-with-docker"></a>
 
 - Start by installing Docker Desktop (macOS/windows) or Docker Engine (Linux). [Install Docker](https://www.docker.com/get-started/)
 
@@ -131,92 +134,99 @@ You have two options for setting up the database:
 
 Now, you have a MySQL database running in a Docker container with the following credentials:
 
-- Database name: my_db
+- Database name: fetch_take_home_db
 - Database password: password
 - Port exposed: 3306
 
+Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by Docker.
+
+```bash
+# the default URL is found in .env.template
+DATABASE_URL=
+```
+
+
 To connect to the database with Prisma, run the following command in a new terminal:
 
-```bash
-npm run prisma:init
-```
-
-#### [2] Local Setup with a Cloud Provider
-
-You can also run the app locally with a MySQL database provided by a cloud service like [PlanetScale](https://planetscale.com/docs/tutorials/planetscale-quick-start-guide) or [Railway](https://docs.railway.app/databases/mysql). Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by the cloud provider.
+**macOS/Linux**
 
 ```bash
-npm run prisma:init
+  npm run prisma:init
 ```
 
-### 3. Running the App
-
-You're now ready to run the app:
+**Windows**
 
 ```bash
-npm run dev
+  npm run prisma:init-win
 ```
 
-The app will be accessible at [http://localhost:3000](http://localhost:3000/) in your web browser.
+#### [2] Setup with a Cloud Provider <a name="cloud-db-setup"></a>
 
+You can also run the app locally with a MySQL database provided by a cloud service like [PlanetScale](https://planetscale.com/docs/tutorials/planetscale-quick-start-guide) or [Railway](https://docs.railway.app/databases/mysql). 
+
+Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by the cloud provider.
+
+```bash
+DATABASE_URL=<mysql://{MYSQL_DB_USER}:{MYSQL_DB_PASSWORD}@{MY_SQL_DB_HOST}:{PORT}/{MYSQL_DB_NAME}>
+```
 ---
 
 ## User Guide
 
 Let's explore the key features of the Dog Matching App:
 
-### Login Page
+### [Login Page](https://github.com/rcervant/fetch-take-home/blob/main/app/(auth)/sign-in/page.tsx)
 
 - Start by logging in with your name and email to access the app.
 
 ![sign-in-form](readmeAssets/img/sign-in-form.png)
 
-### Search Page
+### [Search Page](https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/search/page.tsx)
 
 - Explore and search for available dogs.
 
 ![default-search-page](readmeAssets/img/default-search.png)
 
-- Enjoy support for result pagination with infinite scrolling.
+- Enjoy support for result pagination with [infinite scrolling](https://github.com/rcervant/fetch-take-home/blob/main/components/Dogs/InfiniteScrollDogs.tsx).
 
 ![inf-scrolling](readmeAssets/img/inf-scroll.png)
 
-- Filter dogs by breed.
+- [Filter](https://github.com/rcervant/fetch-take-home/blob/main/components/dogSearchModal/SearchDialog.tsx) dogs by breed.
 
 ![search-modal](readmeAssets/img/search-modal-select.png)
 ![filtered-search-page](readmeAssets/img/search-page-filtered.png)
 
-- Sort results alphabetically by breed, with options for ascending or descending.
+- [Sort](https://github.com/rcervant/fetch-take-home/blob/main/components/Navbar/Sort.tsx) results alphabetically by breed, with options for ascending or descending.
 
 ![search-page-z-to-a](readmeAssets/img/z-a-sort.png)
 
-### Favorite Dogs
+### [Favorite Dogs](https://github.com/rcervant/fetch-take-home/blob/main/hooks/useFavorite.ts)
 
 - Save your favorite dogs for future reference and to generate matches. Favorites save across sessions.
 
 ![heart-button-outline](readmeAssets/img/heart-outline.png)
 ![heart-button-filled](readmeAssets/img/heart-filled.png)
 
-### Dog Page
+### [Dog Page](https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/dog/%5BdogId%5D/page.tsx)
 
 - View detailed information about individual dogs.
 
 ![dog-info-page](readmeAssets/img/dog-page.png)
 
-### Favorite Dogs Page
+### [Favorite Dogs Page](https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/favorites/page.tsx)
 
 - Access a comprehensive list of your favorited dogs.
 - Save your favorite dogs for future reference.
 
 ![favorites](readmeAssets/img/favorites-page.png)
 
-### Match Page
+### [Match Page](https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/match/page.tsx)
 
 - Generate a match with a single dog using the **`match`** button.
 
 ![match-page](readmeAssets/img/match.png)
 
-### Logout
+### [Logout](https://github.com/rcervant/fetch-take-home/blob/main/actions/signOut.ts)
 
 - Logout when you've finished using the app from the user menu in the top right corner.
 
@@ -226,7 +236,7 @@ Let's explore the key features of the Dog Matching App:
 
 Explore these advanced features:
 
-### Nearby Dogs
+### [Nearby Dogs](https://github.com/rcervant/fetch-take-home/blob/main/components/Dogs/NearbyDogs.tsx)
 
 - Find dogs within a 25km radius of the current dog.
 
@@ -235,24 +245,5 @@ Explore these advanced features:
 - Utilize additional filters for age and multiple breeds.
 
 ![search-modal-mult-breeds](readmeAssets/img/search-modal-mult-breeds.png)
-
-## Latest and Greatest
-
-This Dog Matching App boasts the latest technologies and features:
-
-- Developed with Next.js 13 and React Server Components.
-- Hosted on Vercel for seamless deployment and scaling.
-- Utilizes a database for data persistence across sessions and devices.
-- Prioritizes responsive design for various devices.
-- Implements accessibility features to reach a wide audience.
-- Optimizes performance with cached API calls using Next.js.
-- Connects to the database using Prisma for efficient data management.
-- Utilizes Docker for easy deployment and containerization.
-- Stylishly designed using Tailwind CSS.
-- Modularized components for easier maintenance and extendibility.
-- Custom React hooks for efficient functionality and readability.
-- Server-side API calls with Next.js server actions.
-- Sleek UI components from [shadcn/ui](https://ui.shadcn.com/docs).
-- All pages include loading and error states for a smooth user experience.
 
 ---
