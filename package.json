@@ -9,10 +9,11 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "test": "vitest",
+    "prisma:init-win": "./scripts/prisma-init.ps1",
     "prisma:init": "chmod +x ./scripts/prisma-init.sh && ./scripts/prisma-init.sh",
     "db:init-win": "./scripts/db-init.ps1",
     "db:init": "chmod +x ./scripts/db-init.sh && ./scripts/db-init.sh",
-    "start-db": "docker run --name my_db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -v ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql mysql"
+    "start-db": "docker run --name fetch_take_home_db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -v ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql mysql"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
