@@ -40,3 +40,6 @@ logs.txt
 cookie.txt
 
 /data
+/test-results/
+/playwright-report/
+/playwright/.cache/
