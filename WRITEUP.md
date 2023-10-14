@@ -146,17 +146,15 @@ The following design choices were made for the Dog Matching App:
 
 - **Next.js 13**: The application is built using Next.js 13, chosen for its new app router, built-in server-side rendering and static site generation, built-in routing and file-based routing, route grouping, support for React Server Components, and built-in loading and error states.
     - *Alternative Considered*: The alternative to Next.js could have been using Create React App (CRA) with React Router for routing. However, Next.js was preferred due to its built-in support for server-side rendering and static site generation, which significantly improves performance.
-- **Server-Side Data Fetching**: The app utilizes server-side data fetching and caching, which enhances performance and responsiveness by pushing as much HTML to the client before interactivity is needed.
-    - *Alternative Considered*: Client-side data fetching with libraries like Axios or GraphQL was considered, but server-side data fetching was chosen to improve the app's SEO and overall performance by reducing js bundle size since less of the app had to be hydrated.
-- **Prisma**: As the Object-Relational Mapping (ORM) tool, Prisma provides a robust bridge between the application and the database, simplifying data access and management.
-    - *Alternative Considered*: An alternative to Prisma could have been Sequelize, a popular ORM for Node.js applications. However, Prisma was chosen for its more modern and developer-friendly API.
-- **PlanetScale**: The app is hosted on PlanetScale for ease of use and integration with Prisma.
-    - *Alternative Considered*: Other cloud providers like AWS RDS or Google Cloud SQL could have been chosen. However, PlanetScale was selected for its simplicity and integration with Prisma.
+- **Server-Side Data Fetching**: The app utilizes server-side data fetching and caching with Next.js server actions, which enhances performance and responsiveness by pushing as much HTML to the client before interactivity is needed.
+    - *Alternative Considered*: Client-side data fetching with libraries like Axios or GraphQL was considered, but server-side data fetching was chosen to improve the app's SEO and overall performance by reducing js bundle size since layouts and non interactive components could now be sent as HTML to the user as server components.
+- **Persisting Data**: A database was used to persist data of the user and favorite. 
+    - *Alternative Considered*: Considering the app's size, a JSON file could have been used to store the data. However, a database was chosen to ensure data integrity and to allow for future expansion. Also local storage was considered, but it was not chosen because it would not allow for the data to be shared across devices.
 
 ### **UI Library**
 
-- **Shadcn UI**: Shadcn UI was selected as the UI library for its seamless integration with Next.js 13 and Tailwind CSS. This choice ensures consistent and visually appealing user interfaces throughout the app.
-    - *Alternative Considered*: An alternative UI library could have been Material-UI. However, Shadcn UI was preferred because it was designed with Next.js in mind, making integration smoother.
+- **Shadcn UI**: Shadcn UI was selected as the UI library for its seamless integration with Next.js 13 and Tailwind CSS. It's not a component library so the components are not opinionated and can be styled with Tailwind CSS.
+    - *Alternative Considered*: An alternative UI library could have been Material-UI. However, Shadcn UI was preferred because it was designed with Next.js 13 in mind, making integration smoother. Material-UI is built on top of Emotion which was causing issues with Next.js 13 at the time of development.
 
 ### **Database**
 
@@ -164,66 +162,62 @@ The following design choices were made for the Dog Matching App:
     - *Alternative Considered*: PostgreSQL is another powerful and open-source relational database system that could have been chosen. MySQL was selected based on its ease of use and compatibility with PlanetScale.
 - **Prisma ORM**: Prisma serves as the ORM, ensuring a well-structured and efficient data interaction layer. The Prisma ORM allows for clear relationships between users and their favorite items, simplifying data management and retrieval.
     - *Alternative Considered*: An alternative could have been writing custom SQL queries for data interaction instead of using an ORM. However, Prisma was chosen to benefit from its type safety and query generation capabilities.
+- **PlanetScale**: The app's database is hosted on PlanetScale for ease of use and integration with Prisma.
+    - *Alternative Considered*: Other cloud providers like AWS RDS or Google Cloud SQL could have been chosen. However, PlanetScale was selected for its cost and integration with Prisma.
+
 
 ### **Deployment**
 
 - **Vercel**: The app is deployed on Vercel, a cloud platform known for its ease of use and tight integration with Next.js. This choice simplifies the deployment process and ensures reliable hosting.
-    - *Alternative Considered*: An alternative deployment option could have been using AWS Elastic Beanstalk for more control over the deployment environment. However, Vercel was selected for its simplicity and seamless integration.
+    - *Alternative Considered*: An alternative deployment option could have been using AWS Elastic Beanstalk for more control over the deployment environment. However, Vercel was selected for its cost and seamless integration.
 
-## **Challenges/Issues Encountered, Resolutions <a name="challenges-issues-encountered"></a>**
+## **Challenges Encountered and Resolutions <a name="challenges-issues-encountered"></a>**
 
-During the development of the Dog Matching App, several challenges and issues were encountered:
+During the development of the Dog Matching App, several challenges surfaced, demanding innovative solutions:
 
-### **API and CORS Policy**
+### **Authentication Challenges**
 
-The app's API required user credentials to create a user in the database. As a result, the fetch operation had to be executed server-side. However, this introduced complexities:
+The application required user credentials for user creation in the database. As a result, the fetch operation for Fetch's auth endpoint had to be executed server-side, involving the use of sign-in credentials for database storage. However, this presented certain complexities:
 
-- The auth token, which provides authentication, is stored in the user's browser, not on the server. Consequently, each request had to manually set the required cookie in the request header.
-- Next.js has a very aggresive caching policy, which caused it to cache fetch calls and not make new requests when necessary. While this leads to increased performance where the data isnt expected to change, it caused the user session to be stale. To mitigate this, caching had to be forcefully disabled during each sign-in to prevent the use of outdated session data.
+- The authentication token is an httpOnly cookie designed to reside in the user's browser, not on the app's server. Consequently, the response from Fetch's auth endpoint delivered a cookie in the headers, necessitating manual extraction [line 34](https://github.com/rcervant/fetch-take-home/blob/main/actions/signIn.ts). This cookie was then dispatched to the user's browser. The session details were also stored in the database for each user and used in each subsequent fetch operation with Fetch's API in the request headers under `cookie`.
+- Next.js incorporates an assertive caching policy, leading to the caching of fetch calls, inhibiting new requests when required. While this enhances performance for static data, it often resulted in a stale user session. To mitigate this, caching was forcefully disabled during each sign-in to circumvent the use of outdated session data.
 
-### **Infinite Scrolling**
+### **Transition to Infinite Scrolling**
 
-Infinite scrolling was chosen over standard pagination. This decision led to the following challenges:
+In a previous iteration of the application, page navigation buttons labeled `prev` and `next` were employed to append the `prev` and `next` URLs from the server's response to the router stack. This approach, while simpler, mandated a complete page refresh to retrieve the next page's data. This resulted in a suboptimal user experience, as it required multiple clicks on the browser's back button and waiting for the dogs to load. Consequently, a transition to Infinite scrolling was initiated. This transformation introduced specific challenges:
 
-- Creating a new fetch call for each page was required, utilizing the search parameters from the **`next`** property in the API response.
-- Initial data was fetched server-side, and subsequently, data had to be retrieved client-side for the next page. To achieve this without a full page refresh, a server action was passed to the client component to handle the next page's data retrieval.
-- Triggering the next page's data retrieval required the use of a ref to the last element in the list. This ref was used to determine when the user scrolled to the bottom of the page, triggering the next page's data retrieval. 
-- This was handled by utilizing the IntersectionObserver API, which allowed for the ref to be observed and the next page's data retrieval to be triggered when the ref was visible. 
-- This approach led to a smoother user experience, as the next page's data was fetched before the user reached the bottom of the page. 
-- <strong>However</strong>, this approach also introduced complexities, as the ref had to be visible to make the fetch but as it stood, it would make continuous calls to the API while it was visble. 
-- This was solved by [debouncing](https://github.com/rcervant/fetch-take-home/blob/main/lib/client/utils.ts) the call to loadMoreDogs and by utilizing the useEffect hook to return a cleanup function that cleared the ref when the component was unmounted.
+- Initially, the dogs for the first page were fetched server-side, but subsequent pages relied on client-side fetching. This divergence raised peculiarities when making calls from the client. Most notably, the logic for handling API data was primarily developed server-side. To maintain consistency and avoid duplicating logic on the client, Next.js 13 server actions were employed. The challenge was further intensified as the logic for constructing requests to Fetch's API for dog retrieval was previously managed within the [SearchPage](https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/search/page.tsx) server component. This added complexity when making client fetches, as search parameters were no longer automatically parsed. A callback was required to manually adapt the search parameters to the server action's structure. This approach allowed fetch calls to be seamlessly chained from client to server for retrieving the next page's data, mirroring the process used for the initial server-side retrieval.
+- Triggering the next page's data retrieval necessitated the utilization of a reference (ref) to the last element on the page. The ref was instrumental in identifying when the user scrolled to the page's bottom, prompting the retrieval of the next page's data. This functionality was implemented by harnessing the IntersectionObserver API. This method ensured that the ref would be monitored, and the retrieval of the next page's data would be triggered once the ref became visible. This approach considerably improved the user experience, as the next page's data was fetched before the user reached the page's bottom. Nevertheless, this method introduced complexities, as the ref needed to be visible to initiate the fetch. This risked continuous calls to the API while the ref was visible. To address this, a [debouncing](https://github.com/rcervant/fetch-take-home/blob/main/lib/client/utils.ts) mechanism was implemented for the `loadMoreDogs` function. Additionally, the `useEffect` hook was leveraged to return a cleanup function that cleared the ref when the component was unmounted.
 
-### **Form Validation**
+### **Challenges in Form Validation**
 
-Implementing form validation with React Hook Form within Shadcn UI dialog components presented challenges:
+The implementation of form validation within Shadcn UI dialog components posed its own set of challenges:
 
-- Shadcn UI dialog components had issues when with forms from React Hook Form as children within dialog components. To circumvent this limitation, components that would have typically been standalone were defined inline the dialog. This approach was necessary to address the issue, as noted in a similar GitHub [issue](https://github.com/shadcn-ui/ui/issues/709). 
-- The tradeoff of having very long components ([SignInForm](https://github.com/rcervant/fetch-take-home/blob/main/components/SignInForm.tsx), [SearchDialog](https://github.com/rcervant/fetch-take-home/blob/main/components/dogSearchModal/SearchDialog.tsx)) was made to ensure proper form validation and error handling, as the alternative would have been to allow for the form to be submitted without validation. 
-- I opted for a better user experience over modularity in the components
+- Shadcn UI dialog components encountered issues when integrated with forms from React Hook Form as children within dialog components. To circumvent these limitations, components that were typically standalone were redefined inline within the dialog. This approach was imperative in addressing the issue, as observed in a similar GitHub [issue](https://github.com/shadcn-ui/ui/issues/709). 
+  * The trade-off was an expansion of component length ([SignInForm](https://github.com/rcervant/fetch-take-home/blob/main/components/SignInForm.tsx), [SearchDialog](https://github.com/rcervant/fetch-take-home/blob/main/components/dogSearchModal/SearchDialog.tsx)). This decision was made to ensure meticulous form validation and error handling. The alternative was to allow form submission without validation. The chosen approach prioritized user experience over modularity in the components.
 
+## **Effective Workarounds <a name="circumvented-instructions"></a>**
 
-## **Workarounds <a name="circumvented-instructions"></a>**
+To address the challenges encountered during the development of the Dog Matching App, the following workarounds were diligently implemented:
 
+- Manual parsing and configuration of the http auth cookie.
+- Manual parsing of search parameters in the `next` property of the API response to align with the structure of the server action.
 
 
 ## **Diagrams: <a name="diagrams"></a>**
 
-### **ER Diagram:**
 
-!https://chat.openai.com/c/er-diagram.png
-
-The Entity-Relationship (ER) diagram illustrates the database schema for the Dog Matching App. It depicts the relationships between entities, such as users and favorites, and their respective attributes.
-
-### **Architecture Flowchart:**
+### **App Router Flowchart:**
 
 ![app-router](readmeAssets/img/app-router.png)
-picture of the project app router
 
-The architecture flowchart provides an overview of the app's system architecture, including how data flows between various components and services.
+The app router flowchart provides an overview of the app's system architecture, including how data flows between various components and services.
 
-### **UML Class Diagram:**
+### **ER Diagram:**
 
 ![er-diagram](readmeAssets/img/ER-diagram.png)
+
+The Entity-Relationship (ER) diagram illustrates the database schema for the Dog Matching App. It depicts the relationships between entities, users and favorites, and their respective attributes.
 
 ### **Entities:**
 
@@ -249,25 +243,30 @@ There is a uniqueness constraint on the combination of dogId and userId in the F
 
 
 
-## **TODOs: Things to Do Differently or Add in Production <a name="todos"></a>**
+## **TODOs: Areas for Future Development and Production Enhancements <a name="todos"></a>**
 
-While the Dog Matching App is fully functional, there are areas where future improvements could be made:
+While the Dog Matching App is currently fully functional, there are areas where future improvements can be explored:
 
-### **Location Based Searching**
+### **Location-Based Search Functionality**
 
-The app currently only supports searching for dogs by breed and age. To enhance the user experience, the app could be updated to support location-based searching. This could be expanded to look within a user specified radius of a certain zipcode.
+Presently, the app solely facilitates dog searches by breed and age. To elevate the user experience, extending the app's capabilities to support location-based searches is being considered. This expansion could encompass searching within a user-specified radius of a designated zipcode or by city and state.
 
-### **Favorites**
+### **Enhanced User Experience for Favorites Management**
 
-Currently, a delay occurs due to network latency when adding a favorite. To enhance the user experience, implementing the experimental useOptimistic hook could be considered. This would allow for the immediate display of favorites, with updates occurring once the server responds with the finalized favorites.
+There is presently a noticeable delay due to network latency when adding a dog to one's favorites. To enrich the user experience, evaluating the adoption of the experimental useOptimistic hook is being looked into. This feature would enable the immediate display that a dog has been favorited, with updates occurring as soon as the server provides the finalized favorites.
 
-### **Pagination**
+### **Augmented Testing Regimen**
 
-Infinite scrolling could be improved with the integration of a library such as react-query. This library would effectively manage the state of data and handle client-side pagination, potentially providing a smoother user experience.
+To guarantee the resilience and reliability of the application, the incorporation of additional testing procedures is needed. Expanding the scope of testing coverage would facilitate the identification and resolution of potential issues.
 
-### **Testing**
+### **Heightened Observability and Logging**
 
-To ensure the robustness and reliability of the application, additional testing could be implemented. More comprehensive testing coverage would help identify and resolve potential issues.
+For improved monitoring and issue identification, implementation of expanded logging is being explored. This initiative would permit the timely detection of potential issues and bottlenecks, leading to a more robust and responsive application.
+
+### **Elevating User Experience through A/B Testing**
+
+To refine the app's user experience, the introduction of A/B testing methodologies is a valuable consideration. This approach empowers the comparison of distinct app versions to ascertain which iteration delivers superior performance. These can be performed in `middleware.ts` and reside on Vercel's edge network.
+
 
 ## **Troubleshooting <a name="troubleshooting"></a>**
 
@@ -308,32 +307,38 @@ If you encounter issues with this command, try the following steps:
 4. **Port Conflict**: In case port 3306 is already in use, you can change the port mapping in the **`docker run`** command to use a different port, such as 3307:
     
     ```bash
-    bashCopy code
     docker run --name fetch_take_home_db -p 3307:3306 -e MYSQL_ROOT_PASSWORD=password -v ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql mysql
-    
     ```
     
 
 ### **Troubleshooting App Issues**
 
-If you encounter issues while using the app, follow these troubleshooting steps:
+In the event that you encounter issues while using the app, we recommend following these troubleshooting steps:
 
-- **Node.js and Next.js**: Make sure you have Node.js version 18.7 installed on your machine, as well as the latest version of Next.js (13.5 as of this writing).
-- **Development Mode**: Try running the app in development mode to check for any errors logged to the console.
-- **Restart**: Attempt to resolve the issue by restarting the app.
-- **Clear Browser Cache and Cookies**: Clear your browser's cache and cookies, as this can sometimes resolve problems with stale auth cookies.
-- **Clear Next Cache**: Clear your Next.js cache `.next/`, as this can sometimes resolve problems with stale data.
-- **Use a Different Browser**: If the issue persists, try using a different web browser.
-- **Using Incognito Mode**: The app relies on an auth cookie being placed on the browser to verify the user. **`Incognito mode DOES NOT save this cookie`**. As a result, the app will not work in incognito mode.
+- **Node.js and Next.js**: Ensure that you have Node.js version 18.7 installed on your machine, along with the latest Next.js version (13.5 at the time of writing).
+- **Development Mode**: To identify any potential problems, run the app in development mode and check for error messages in the console.
+- **Restart**: Attempt to resolve the issue by restarting the application.
+- **Clear Browser Cache and Cookies**: Resolving problems related to stale auth cookies can often be achieved by clearing your browser's cache and cookies.
+- **Clear Next Cache**: To address potential issues stemming from stale data, clear your Next.js cache stored in the `.next/` directory.
+- **Use an Alternate Browser**: If the issue persists, consider switching to a different web browser.
+- **Using Incognito Mode**: Please note that the app relies on an authentication cookie placed in the browser to verify the user. **`Incognito mode DOES NOT save this cookie`**, rendering the app inoperative in such a mode.
 
 ### **Reporting Bugs**
 
-If you continue to experience difficulties, consider [reporting a bug](https://github.com/rcervant/fetch-take-home/issues). When reporting a bug, please include the following information:
+Should you continue to face difficulties, you are encouraged to consider [reporting a bug](https://github.com/rcervant/fetch-take-home/issues). When submitting a bug report, kindly include the following information:
 
-- A clear description of the issue you're facing.
+- A comprehensive description of the issue you are encountering.
 - Detailed steps to reproduce the problem.
-- The version of Node.js you're using.
-- The version of Next.js you're using.
-- The version of Docker you're using.
+- Information regarding the versions you are using:
+  - Node.js version.
+  - Next.js version.
+  - Docker version.
 
-By providing this information, you'll help in the identification and resolution of any potential issues.
+By furnishing this data, you will significantly contribute to the identification and resolution of any potential issues.
+
+
+## Conclusion
+
+The Dog Matching App is a fully functional application that allows users to search for dogs by breed and age, and add them to their favorites. The app is built with Next.js 13, Shadcn UI, and Prisma ORM. It is deployed on Vercel and uses a MySQL database hosted on PlanetScale. The app is fully responsive and supports infinite scrolling. It also supports server-side data fetching and caching with Next.js. It can be further improved by adding location-based searching, favorites, pagination, and testing.
+
+Your time and commitment to understanding the application's inner workings is greatly appreciated.
