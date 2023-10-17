@@ -7,6 +7,7 @@ import { favoriteDog, unfavoriteDog } from "@/actions/favoriteDog";
 import { useThrottle } from "./useThrottle";
 import { SIGN_IN_PATH, THROTTLE_FAV_TIME } from "@/lib/constants";
 import { useToast } from "@/components/ui/use-toast";
+import signOut from "@/actions/signOut";
 
 interface IUseFavorite {
   dogId: string;
@@ -39,6 +40,14 @@ const useFavorite = ({ dogId, currentUser }: IUseFavorite) => {
     }
 
     try {
+      if (!currentUser) {
+        toast({
+          title: "Signed out!",
+          description: "You have been signed out for inactivity.",
+        });
+        await signOut();
+      }
+
       if (!hasFavorited) {
         const res = (await favoriteDog({ dogIdToFavorite: dogId })) || null;
         if (!res) {
