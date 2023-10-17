@@ -19,6 +19,7 @@ const DogCard = ({ data, currentUser }: DogCardProps) => {
     <div
       onClick={() => router.push(`${DOG_PATH}/${id}`)}
       className="group col-span-1 cursor-pointer"
+      data-testid={`dog-card-${id}`}
     >
       <div className="flex w-full flex-col gap-2">
         <div className="relative aspect-square w-full overflow-hidden rounded-xl">
@@ -36,7 +37,11 @@ const DogCard = ({ data, currentUser }: DogCardProps) => {
             sizes="100%"
           />
           <div className="absolute right-3 top-3">
-            <HeartButton dogId={id} currentUser={currentUser} />
+            <HeartButton
+              dogId={id}
+              currentUser={currentUser}
+              data-testid={`heart-button-${id}`}
+            />
           </div>
         </div>
         <div className="flex flex-row items-center gap-3">

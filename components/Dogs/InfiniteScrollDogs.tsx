@@ -45,7 +45,6 @@ const InfiniteScrollDogs = ({
   useEffect(() => {
     const debouncedUpdateDogs = debounce(updateDogsFromSearch, DEBOUNCE_TIME);
 
-    // triggers when search modal is submitted
     if (isSearching) {
       debouncedUpdateDogs();
     }
@@ -134,7 +133,7 @@ const InfiniteScrollDogs = ({
           <DogCard currentUser={user} data={dog} key={dog.id} />
         ))}
         {!loadMoreDogsCalled && initialDogIdsMetadata.total > dogs.length && (
-          <div ref={ref}>
+          <div ref={ref} data-testid="infinite-scroll-dogs-skeleton">
             <DogCardSkeleton />
           </div>
         )}

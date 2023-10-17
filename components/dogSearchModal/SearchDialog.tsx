@@ -130,7 +130,7 @@ const SearchDialog = () => {
   return (
     <Form {...form}>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
+        <DialogTrigger data-testid="search-dialog-trigger" asChild>
           <div className="flex w-full cursor-pointer rounded-full border-[1px] py-1 shadow-sm transition hover:shadow-md sm:w-2/6">
             <div className="flex w-full flex-row items-center justify-between pr-1">
               <div className=" pl-4 text-sm font-semibold">Search for pups</div>
@@ -152,8 +152,8 @@ const SearchDialog = () => {
                   Select one or more breeds to search for
                 </DialogDescription>
               </DialogHeader>
-              <DogBreedCombobox />
-              <SelectedBreedsAccordion />
+              <DogBreedCombobox data-testid="dog-combobox" />
+              <SelectedBreedsAccordion data-testid="selected-breeds-accordion" />
               <div className="flex gap-1">
                 <FormField
                   control={form.control}
@@ -167,6 +167,7 @@ const SearchDialog = () => {
                           max={MAX_AGE}
                           placeholder={`${MIN_AGE}`}
                           {...field}
+                          data-testid="min-age-input"
                         />
                       </FormControl>
                       <FormMessage />
@@ -185,6 +186,7 @@ const SearchDialog = () => {
                           max={MAX_AGE}
                           placeholder={`${MAX_AGE}`}
                           {...field}
+                          data-testid="max-age-input"
                         />
                       </FormControl>
                       <FormMessage />
@@ -200,6 +202,7 @@ const SearchDialog = () => {
                 }}
                 variant={"ghost"}
                 className="underline"
+                data-testid="reset-filters"
               >
                 Reset Filters
               </Button>
@@ -213,6 +216,7 @@ const SearchDialog = () => {
                   <Button
                     type="submit"
                     className="w-full"
+                    data-testid="submit-search"
                     disabled={form.formState.isSubmitting}
                   >
                     Submit
