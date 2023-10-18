@@ -9,8 +9,6 @@ interface DogPageParams {
   params: { dogId: string };
 }
 
-export const dynamic = "force-dynamic";
-
 const DogPage = async ({ params }: DogPageParams) => {
   if (!params) throw new Error("No params found");
 

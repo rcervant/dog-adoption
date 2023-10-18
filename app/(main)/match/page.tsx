@@ -6,8 +6,6 @@ import { SIGN_IN_PATH } from "@/lib/constants";
 import { Dog } from "@/types";
 import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
 const DogMatchPage = async () => {
   const currentUser = (await getCurrentUser()) || null;
 

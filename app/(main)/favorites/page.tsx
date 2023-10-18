@@ -5,8 +5,6 @@ import FavoriteDogs from "@/components/Dogs/FavoriteDogs";
 import { SIGN_IN_PATH } from "@/lib/constants";
 import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
 const FavoriteDogsPage = async () => {
   const currentUser = (await getCurrentUser()) || null;
 

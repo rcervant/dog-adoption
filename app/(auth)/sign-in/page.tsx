@@ -1,7 +1,5 @@
 import SignInForm from "@/components/SignInForm";
 
-export const dynamic = "force-dynamic";
-
 const SignInPage = async () => {
   return (
     <>
