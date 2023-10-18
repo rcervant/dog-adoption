@@ -74,8 +74,12 @@ const UserNav = ({ currentUser }: UserNavProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+      <DropdownMenuTrigger data-testid="user-nav-trigger" asChild>
+        <Button
+          variant="ghost"
+          className="relative h-8 w-8 rounded-full"
+          data-testid="user-nav-button"
+        >
           <Avatar className="h-9 w-9">
             <AvatarImage src="/images/placeholder.jpg" alt="avatar" />
             <AvatarFallback>
@@ -116,7 +120,12 @@ const UserNav = ({ currentUser }: UserNavProps) => {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={handleLogout}
+          data-testid="user-nav-logout-button"
+        >
+          Log out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

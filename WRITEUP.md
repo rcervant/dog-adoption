@@ -4,7 +4,7 @@
 
 1. [Build Instructions](#build-instructions)
 2. [Design Choices](#design-choices)
-3. [Challenges]( #challenges-issues-encountered)
+3. [Challenges](#challenges-issues-encountered)
 4. [Workarounds](#workarounds)
 5. [Diagrams: E-R, App Router Flowchart](#diagrams)
 6. [TODOs](#todos)
@@ -13,7 +13,6 @@
 ## **Build Instructions <a name="build-and-usage-instructions"></a>**
 
 ### **Getting Started with the Dog Matching App**
-
 
 ### 1. Install Dependencies
 
@@ -83,7 +82,6 @@ Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by Docker.
 DATABASE_URL=
 ```
 
-
 To connect to the database with Prisma, run the following command in a new terminal:
 
 **macOS/Linux**
@@ -100,7 +98,7 @@ To connect to the database with Prisma, run the following command in a new termi
 
 #### [2] Setup with a Cloud Provider <a name="cloud-db-setup"></a>
 
-You can also run the app locally with a MySQL database provided by a cloud service like [PlanetScale](https://planetscale.com/docs/tutorials/planetscale-quick-start-guide) or [Railway](https://docs.railway.app/databases/mysql). 
+You can also run the app locally with a MySQL database provided by a cloud service like [PlanetScale](https://planetscale.com/docs/tutorials/planetscale-quick-start-guide) or [Railway](https://docs.railway.app/databases/mysql).
 
 Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by the cloud provider.
 
@@ -141,35 +139,33 @@ The following design choices were made for the Dog Matching App:
 - [Database](#database)
 - [Deployment](#deployment)
 
-
 ### **Architectural Decisions**
 
 - **Next.js 13**: The application is built using Next.js 13, chosen for its new app router, built-in server-side rendering and static site generation, built-in routing and file-based routing, route grouping, support for React Server Components, and built-in loading and error states.
-    - *Alternative Considered*: The alternative to Next.js could have been using Create React App (CRA) with React Router for routing. However, Next.js was preferred due to its built-in support for server-side rendering and static site generation, which significantly improves performance.
+  - _Alternative Considered_: The alternative to Next.js could have been using Create React App (CRA) with React Router for routing. However, Next.js was preferred due to its built-in support for server-side rendering and static site generation, which significantly improves performance.
 - **Server-Side Data Fetching**: The app utilizes server-side data fetching and caching with Next.js server actions, which enhances performance and responsiveness by pushing as much HTML to the client before interactivity is needed.
-    - *Alternative Considered*: Client-side data fetching with libraries like Axios or GraphQL was considered, but server-side data fetching was chosen to improve the app's SEO and overall performance by reducing js bundle size since layouts and non interactive components could now be sent as HTML to the user as server components.
-- **Persisting Data**: A database was used to persist data of the user and favorite. 
-    - *Alternative Considered*: Considering the app's size, a JSON file could have been used to store the data. However, a database was chosen to ensure data integrity and to allow for future expansion. Also local storage was considered, but it was not chosen because it would not allow for the data to be shared across devices.
+  - _Alternative Considered_: Client-side data fetching with libraries like Axios or GraphQL was considered, but server-side data fetching was chosen to improve the app's SEO and overall performance by reducing js bundle size since layouts and non interactive components could now be sent as HTML to the user as server components.
+- **Persisting Data**: A database was used to persist data of the user and favorite.
+  - _Alternative Considered_: Considering the app's size, a JSON file could have been used to store the data. However, a database was chosen to ensure data integrity and to allow for future expansion. Also local storage was considered, but it was not chosen because it would not allow for the data to be shared across devices.
 
 ### **UI Library**
 
 - **Shadcn UI**: Shadcn UI was selected as the UI library for its seamless integration with Next.js 13 and Tailwind CSS. It's not a component library so the components are not opinionated and can be styled with Tailwind CSS.
-    - *Alternative Considered*: An alternative UI library could have been Material-UI. However, Shadcn UI was preferred because it was designed with Next.js 13 in mind, making integration smoother. Material-UI is built on top of Emotion which was causing issues with Next.js 13 at the time of development.
+  - _Alternative Considered_: An alternative UI library could have been Material-UI. However, Shadcn UI was preferred because it was designed with Next.js 13 in mind, making integration smoother. Material-UI is built on top of Emotion which was causing issues with Next.js 13 at the time of development.
 
 ### **Database**
 
 - **MySQL**: MySQL is used as the database system, providing a reliable and widely-supported data storage solution.
-    - *Alternative Considered*: PostgreSQL is another powerful and open-source relational database system that could have been chosen. MySQL was selected based on its ease of use and compatibility with PlanetScale.
+  - _Alternative Considered_: PostgreSQL is another powerful and open-source relational database system that could have been chosen. MySQL was selected based on its ease of use and compatibility with PlanetScale.
 - **Prisma ORM**: Prisma serves as the ORM, ensuring a well-structured and efficient data interaction layer. The Prisma ORM allows for clear relationships between users and their favorite items, simplifying data management and retrieval.
-    - *Alternative Considered*: An alternative could have been writing custom SQL queries for data interaction instead of using an ORM. However, Prisma was chosen to benefit from its type safety and query generation capabilities.
+  - _Alternative Considered_: An alternative could have been writing custom SQL queries for data interaction instead of using an ORM. However, Prisma was chosen to benefit from its type safety and query generation capabilities.
 - **PlanetScale**: The app's database is hosted on PlanetScale for ease of use and integration with Prisma.
-    - *Alternative Considered*: Other cloud providers like AWS RDS or Google Cloud SQL could have been chosen. However, PlanetScale was selected for its cost and integration with Prisma.
-
+  - _Alternative Considered_: Other cloud providers like AWS RDS or Google Cloud SQL could have been chosen. However, PlanetScale was selected for its cost and integration with Prisma.
 
 ### **Deployment**
 
 - **Vercel**: The app is deployed on Vercel, a cloud platform known for its ease of use and tight integration with Next.js. This choice simplifies the deployment process and ensures reliable hosting.
-    - *Alternative Considered*: An alternative deployment option could have been using AWS Elastic Beanstalk for more control over the deployment environment. However, Vercel was selected for its cost and seamless integration.
+  - _Alternative Considered_: An alternative deployment option could have been using AWS Elastic Beanstalk for more control over the deployment environment. However, Vercel was selected for its cost and seamless integration.
 
 ## **Challenges Encountered and Resolutions <a name="challenges-issues-encountered"></a>**
 
@@ -186,15 +182,15 @@ The application required user credentials for user creation in the database. As 
 
 In a previous iteration of the application, page navigation buttons labeled `prev` and `next` were employed to append the `prev` and `next` URLs from the server's response to the router stack. This approach, while simpler, mandated a complete page refresh to retrieve the next page's data. This resulted in a suboptimal user experience, as it required multiple clicks on the browser's back button and waiting for the dogs to load. Consequently, a transition to Infinite scrolling was initiated. This transformation introduced specific challenges:
 
-- Initially, the dogs for the first page were fetched server-side, but subsequent pages relied on client-side fetching. This divergence raised peculiarities when making calls from the client. Most notably, the logic for handling API data was primarily developed server-side. To maintain consistency and avoid duplicating logic on the client, Next.js 13 server actions were employed. The challenge was further intensified as the logic for constructing requests to Fetch's API for dog retrieval was previously managed within the [SearchPage](https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/search/page.tsx) server component. This added complexity when making client fetches, as search parameters were no longer automatically parsed. A callback was required to manually adapt the search parameters to the server action's structure. This approach allowed fetch calls to be seamlessly chained from client to server for retrieving the next page's data, mirroring the process used for the initial server-side retrieval.
+- Initially, the dogs for the first page were fetched server-side, but subsequent pages relied on client-side fetching. This divergence raised peculiarities when making calls from the client. Most notably, the logic for handling API data was primarily developed server-side. To maintain consistency and avoid duplicating logic on the client, Next.js 13 server actions were employed. The challenge was further intensified as the logic for constructing requests to Fetch's API for dog retrieval was previously managed within the [SearchPage](<https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/search/page.tsx>) server component. This added complexity when making client fetches, as search parameters were no longer automatically parsed. A callback was required to manually adapt the search parameters to the server action's structure. This approach allowed fetch calls to be seamlessly chained from client to server for retrieving the next page's data, mirroring the process used for the initial server-side retrieval.
 - Triggering the next page's data retrieval necessitated the utilization of a reference (ref) to the last element on the page. The ref was instrumental in identifying when the user scrolled to the page's bottom, prompting the retrieval of the next page's data. This functionality was implemented by harnessing the IntersectionObserver API. This method ensured that the ref would be monitored, and the retrieval of the next page's data would be triggered once the ref became visible. This approach considerably improved the user experience, as the next page's data was fetched before the user reached the page's bottom. Nevertheless, this method introduced complexities, as the ref needed to be visible to initiate the fetch. This risked continuous calls to the API while the ref was visible. To address this, a [debouncing](https://github.com/rcervant/fetch-take-home/blob/main/lib/client/utils.ts) mechanism was implemented for the `loadMoreDogs` function. Additionally, the `useEffect` hook was leveraged to return a cleanup function that cleared the ref when the component was unmounted.
 
 ### **Challenges in Form Validation**
 
 The implementation of form validation within Shadcn UI dialog components posed its own set of challenges:
 
-- Shadcn UI dialog components encountered issues when integrated with forms from React Hook Form as children within dialog components. To circumvent these limitations, components that were typically standalone were redefined inline within the dialog. This approach was imperative in addressing the issue, as observed in a similar GitHub [issue](https://github.com/shadcn-ui/ui/issues/709). 
-  * The trade-off was an expansion of component length ([SignInForm](https://github.com/rcervant/fetch-take-home/blob/main/components/SignInForm.tsx), [SearchDialog](https://github.com/rcervant/fetch-take-home/blob/main/components/dogSearchModal/SearchDialog.tsx)). This decision was made to ensure meticulous form validation and error handling. The alternative was to allow form submission without validation. The chosen approach prioritized user experience over modularity in the components.
+- Shadcn UI dialog components encountered issues when integrated with forms from React Hook Form as children within dialog components. To circumvent these limitations, components that were typically standalone were redefined inline within the dialog. This approach was imperative in addressing the issue, as observed in a similar GitHub [issue](https://github.com/shadcn-ui/ui/issues/709).
+  - The trade-off was an expansion of component length ([SignInForm](https://github.com/rcervant/fetch-take-home/blob/main/components/SignInForm.tsx), [SearchDialog](https://github.com/rcervant/fetch-take-home/blob/main/components/dogSearchModal/SearchDialog.tsx)). This decision was made to ensure meticulous form validation and error handling. The alternative was to allow form submission without validation. The chosen approach prioritized user experience over modularity in the components.
 
 ## **Effective Workarounds <a name="circumvented-instructions"></a>**
 
@@ -203,9 +199,7 @@ To address the challenges encountered during the development of the Dog Matching
 - Manual parsing and configuration of the http auth cookie.
 - Manual parsing of search parameters in the `next` property of the API response to align with the structure of the server action.
 
-
 ## **Diagrams: <a name="diagrams"></a>**
-
 
 ### **App Router Flowchart:**
 
@@ -221,7 +215,8 @@ The Entity-Relationship (ER) diagram illustrates the database schema for the Dog
 
 ### **Entities:**
 
-`User`: 
+`User`:
+
 - id: A unique identifier for the user.
 - createdAt: A timestamp for when the user was created.
 - updatedAt: A timestamp for when the user was last updated.
@@ -230,6 +225,7 @@ The Entity-Relationship (ER) diagram illustrates the database schema for the Dog
 - session: the current cookie on the clients browser (needed for credentials in fetch).
 
 `Favorite`:
+
 - id: A unique identifier for the favorite item.
 - createdAt: A timestamp for when the favorite was created.
 - dogId: A field that stores the identifier of the favorited dog.
@@ -240,8 +236,6 @@ There is a one-to-many relationship between the User and Favorite entities, wher
 
 `Indexes and Constraints`:
 There is a uniqueness constraint on the combination of dogId and userId in the Favorite entity. This constraint ensures that a user can have a favorite for a particular dog only once.
-
-
 
 ## **TODOs: Areas for Future Development and Production Enhancements <a name="todos"></a>**
 
@@ -266,7 +260,6 @@ For improved monitoring and issue identification, implementation of expanded log
 ### **Elevating User Experience through A/B Testing**
 
 To refine the app's user experience, the introduction of A/B testing methodologies is a valuable consideration. This approach empowers the comparison of distinct app versions to ascertain which iteration delivers superior performance. These can be performed in `middleware.ts` and reside on Vercel's edge network.
-
 
 ## **Troubleshooting <a name="troubleshooting"></a>**
 
@@ -293,23 +286,22 @@ If you encounter issues with this command, try the following steps:
 
 1. **Docker Installation**: Ensure that Docker is properly installed on your machine, and it is running.
 2. **Stop Existing Container**: If a Docker container with the name **`fetch_take_home_db`** is already running, stop it using the following command:
-    
-    ```bash
-    docker stop fetch_take_home_db
-    ```
-    
+
+   ```bash
+   docker stop fetch_take_home_db
+   ```
+
 3. **Remove Existing Container**: If the container is not running, you can remove it with the following command:
-    
-    ```bash
-    docker rm fetch_take_home_db
-    ```
-    
+
+   ```bash
+   docker rm fetch_take_home_db
+   ```
+
 4. **Port Conflict**: In case port 3306 is already in use, you can change the port mapping in the **`docker run`** command to use a different port, such as 3307:
-    
-    ```bash
-    docker run --name fetch_take_home_db -p 3307:3306 -e MYSQL_ROOT_PASSWORD=password -v ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql mysql
-    ```
-    
+
+   ```bash
+   docker run --name fetch_take_home_db -p 3307:3306 -e MYSQL_ROOT_PASSWORD=password -v ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql mysql
+   ```
 
 ### **Troubleshooting App Issues**
 
@@ -335,7 +327,6 @@ Should you continue to face difficulties, you are encouraged to consider [report
   - Docker version.
 
 By furnishing this data, you will significantly contribute to the identification and resolution of any potential issues.
-
 
 ## Conclusion
 

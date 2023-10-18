@@ -35,7 +35,7 @@ const DogBreedCombobox = () => {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger data-testid="dog-breed-select-trigger" asChild>
         <Button
           variant="outline"
           role="combobox"
@@ -52,13 +52,17 @@ const DogBreedCombobox = () => {
       <PopoverContent className="w-[200px] overflow-auto p-0">
         {status === "loaded" && (
           <Command>
-            <CommandInput placeholder="Search dog breed..." />
+            <CommandInput
+              placeholder="Search dog breed..."
+              data-testid="dog-breed-search-bar"
+            />
             <CommandEmpty>No dog breed found.</CommandEmpty>
             <CommandGroup>
               <ScrollArea className="h-48 w-full">
                 {dogBreedOptions.map((dogBreed) => (
                   <CommandItem
                     key={dogBreed.value}
+                    data-testid={`${dogBreed.value}-label`}
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue);
                       breedStore.addBreed(dogBreed.label);

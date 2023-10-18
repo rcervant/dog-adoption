@@ -34,7 +34,10 @@ const SelectedBreedsAccordion = () => {
               selectedBreeds.length < 9 ? "h-auto" : "h-[10vh]"
             } w-full rounded-lg`}
           >
-            <div className="grid grid-cols-3 gap-1">
+            <div
+              className="grid grid-cols-3 gap-1"
+              data-testid="selected-breed-badges"
+            >
               {selectedBreeds.map((breed) => (
                 <Badge onClick={handleClick} key={breed}>
                   {breed}

@@ -114,7 +114,7 @@ const SignInForm = () => {
                 <FormItem className="pb-4">
                   <FormLabel className="text-xl">Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Summer" {...field} />
+                    <Input {...field} data-testid="sign-in-name-input" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -129,7 +129,7 @@ const SignInForm = () => {
                 <FormItem className="pt-4">
                   <FormLabel className="text-xl">Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="summer@pup.com" {...field} />
+                    <Input {...field} data-testid="sign-in-email-input" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,6 +142,7 @@ const SignInForm = () => {
             <Button
               className="w-full"
               type="submit"
+              data-testid="sign-in-button"
               disabled={form.formState.isSubmitting}
             >
               Sign in

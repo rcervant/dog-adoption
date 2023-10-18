@@ -39,6 +39,7 @@ const Sort = () => {
       label={`Sort ${field} ${sortOrder === ASCENDING ? "A-Z" : "Z-A"}`}
       icon={SlidersHorizontal}
       onClick={handleSort}
+      data-testid="sort-button"
     />
   );
 };

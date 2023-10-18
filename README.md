@@ -145,7 +145,6 @@ Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by Docker.
 DATABASE_URL=
 ```
 
-
 To connect to the database with Prisma, run the following command in a new terminal:
 
 **macOS/Linux**
@@ -162,26 +161,27 @@ To connect to the database with Prisma, run the following command in a new termi
 
 #### [2] Setup with a Cloud Provider <a name="cloud-db-setup"></a>
 
-You can also run the app locally with a MySQL database provided by a cloud service like [PlanetScale](https://planetscale.com/docs/tutorials/planetscale-quick-start-guide) or [Railway](https://docs.railway.app/databases/mysql). 
+You can also run the app locally with a MySQL database provided by a cloud service like [PlanetScale](https://planetscale.com/docs/tutorials/planetscale-quick-start-guide) or [Railway](https://docs.railway.app/databases/mysql).
 
 Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by the cloud provider.
 
 ```bash
 DATABASE_URL=<mysql://{MYSQL_DB_USER}:{MYSQL_DB_PASSWORD}@{MY_SQL_DB_HOST}:{PORT}/{MYSQL_DB_NAME}>
 ```
+
 ---
 
 ## User Guide
 
 Let's explore the key features of the Dog Matching App:
 
-### [Login Page](https://github.com/rcervant/fetch-take-home/blob/main/app/(auth)/sign-in/page.tsx)
+### [Login Page](<https://github.com/rcervant/fetch-take-home/blob/main/app/(auth)/sign-in/page.tsx>)
 
 - Start by logging in with your name and email to access the app.
 
 ![sign-in-form](readmeAssets/img/sign-in-form.png)
 
-### [Search Page](https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/search/page.tsx)
+### [Search Page](<https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/search/page.tsx>)
 
 - Explore and search for available dogs.
 
@@ -207,20 +207,20 @@ Let's explore the key features of the Dog Matching App:
 ![heart-button-outline](readmeAssets/img/heart-outline.png)
 ![heart-button-filled](readmeAssets/img/heart-filled.png)
 
-### [Dog Page](https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/dog/%5BdogId%5D/page.tsx)
+### [Dog Page](<https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/dog/%5BdogId%5D/page.tsx>)
 
 - View detailed information about individual dogs.
 
 ![dog-info-page](readmeAssets/img/dog-page.png)
 
-### [Favorite Dogs Page](https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/favorites/page.tsx)
+### [Favorite Dogs Page](<https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/favorites/page.tsx>)
 
 - Access a comprehensive list of your favorited dogs.
 - Save your favorite dogs for future reference.
 
 ![favorites](readmeAssets/img/favorites-page.png)
 
-### [Match Page](https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/match/page.tsx)
+### [Match Page](<https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/match/page.tsx>)
 
 - Generate a match with a single dog using the **`match`** button.
 

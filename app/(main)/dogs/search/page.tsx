@@ -12,8 +12,6 @@ interface SearchProps {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export const dynamic = "force-dynamic";
-
 const DogSearchPage = async ({
   searchParams = { sort: ASCENDING },
 }: SearchProps) => {
