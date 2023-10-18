@@ -24,6 +24,7 @@ jobs:
           NEXT_PUBLIC_ORIGIN: ${{ secrets.NEXT_PUBLIC_ORIGIN }}
           NEXT_PUBLIC_FETCH_COOKIE_NAME: ${{ secrets.NEXT_PUBLIC_FETCH_COOKIE_NAME }}
           NEXT_PUBLIC_FETCH_API_URL: ${{ secrets.NEXT_PUBLIC_FETCH_API_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
