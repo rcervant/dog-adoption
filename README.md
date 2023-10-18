@@ -168,6 +168,15 @@ Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by the cloud 
 ```bash
 DATABASE_URL=<mysql://{MYSQL_DB_USER}:{MYSQL_DB_PASSWORD}@{MY_SQL_DB_HOST}:{PORT}/{MYSQL_DB_NAME}>
 ```
+### 3. Running the App
+
+You're now ready to run the app:
+
+```bash
+npm run dev
+```
+
+The app will be accessible at [http://localhost:3000](http://localhost:3000/) in your web browser.
 
 ---
 
