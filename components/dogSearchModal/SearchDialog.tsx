@@ -165,8 +165,8 @@ const SearchDialog = () => {
                         <Input
                           min={MIN_AGE}
                           max={MAX_AGE}
-                          placeholder={`${MIN_AGE}`}
                           {...field}
+                          onClick={() => field.onChange("")}
                           data-testid="min-age-input"
                         />
                       </FormControl>
@@ -184,8 +184,8 @@ const SearchDialog = () => {
                         <Input
                           min={MIN_AGE}
                           max={MAX_AGE}
-                          placeholder={`${MAX_AGE}`}
                           {...field}
+                          onClick={() => field.onChange("")}
                           data-testid="max-age-input"
                         />
                       </FormControl>

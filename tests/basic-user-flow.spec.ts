@@ -17,14 +17,15 @@ test.describe("Basic user flow", () => {
   test("should sign in user", async ({ page }) => {
     const nameInput = page.getByTestId("sign-in-name-input");
     await nameInput.fill(credentials.name);
-
     await nameInput.press("Tab");
 
     const emailInput = page.getByTestId("sign-in-email-input");
     await emailInput.fill(credentials.email);
-    await emailInput.press("Enter");
 
-    await page.waitForTimeout(500);
+    const signInButton = page.getByTestId("sign-in-button");
+    await signInButton.click();
+
+    await page.waitForTimeout(1000);
 
     // TODO: Fix assertions
     //   await expect(page.getByTestId("sign-in-name-input")).toHaveText([credentials.name]);
@@ -40,7 +41,9 @@ test.describe("Basic user flow", () => {
 
     const emailInput = page.getByTestId("sign-in-email-input");
     await emailInput.fill(credentials.email);
-    await emailInput.press("Enter");
+
+    const signInButton = page.getByTestId("sign-in-button");
+    await signInButton.click();
 
     await page.waitForTimeout(1000);
 
