@@ -10,30 +10,28 @@ interface IFavoriteDog {
 
 export const favoriteDog = async ({ dogIdToFavorite }: IFavoriteDog) => {
   try {
-    const currentUser = (await getCurrentUser()) || null;
+    const currentUser = await getCurrentUser();
     if (!currentUser) return null;
 
     const favorites = [...(currentUser.favorites || [])];
 
-    const existingFavorite =
-      (await prisma.favorite.findFirst({
-        where: {
-          userId: currentUser.id,
-          dogId: dogIdToFavorite,
-        },
-      })) || null;
+    const existingFavorite = await prisma.favorite.findFirst({
+      where: {
+        userId: currentUser.id,
+        dogId: dogIdToFavorite,
+      },
+    });
 
     if (existingFavorite) {
       return { message: "dog has already been favorited" };
     }
 
-    const newFavorite =
-      (await prisma.favorite.create({
-        data: {
-          dogId: dogIdToFavorite,
-          userId: currentUser.id,
-        },
-      })) || null;
+    const newFavorite = await prisma.favorite.create({
+      data: {
+        dogId: dogIdToFavorite,
+        userId: currentUser.id,
+      },
+    });
 
     if (!newFavorite) throw new Error("Could not create new favorite");
 
@@ -44,22 +42,21 @@ export const favoriteDog = async ({ dogIdToFavorite }: IFavoriteDog) => {
 
     favorites.push(serializedNewFavorite);
 
-    const user =
-      (await prisma.user.update({
-        where: {
-          id: currentUser.id,
+    const user = await prisma.user.update({
+      where: {
+        id: currentUser.id,
+      },
+      data: {
+        favorites: {
+          connect: favorites.map((favorite) => ({
+            dogId_userId: {
+              dogId: favorite.dogId,
+              userId: currentUser.id,
+            },
+          })),
         },
-        data: {
-          favorites: {
-            connect: favorites.map((favorite) => ({
-              dogId_userId: {
-                dogId: favorite.dogId,
-                userId: currentUser.id,
-              },
-            })),
-          },
-        },
-      })) || null;
+      },
+    });
     if (!user) throw new Error("Could not update user");
 
     return { message: "dog has been favorited successfully" };
