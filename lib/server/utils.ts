@@ -1,6 +1,11 @@
 "use server";
 
-import { ASCENDING, EARTH_RADIUS_KM, SEMI_COLON } from "@/lib/constants";
+import {
+  ASCENDING,
+  EARTH_RADIUS_KM,
+  SEMI_COLON,
+  VALID_PARAMS,
+} from "@/lib/constants";
 import { GeoPoint, IDogSearchParams } from "@/types";
 import queryString from "query-string";
 
@@ -16,6 +21,37 @@ export async function getQueryFromSearchParams(searchParams: IDogSearchParams) {
   });
 
   return query;
+}
+
+interface ISearchParams {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export async function getSanitizedSearchParams({
+  searchParams,
+}: ISearchParams): Promise<IDogSearchParams> {
+  const isParamValid = (key: string): boolean =>
+    Object.hasOwn(VALID_PARAMS, key);
+
+  const isValueValid = (value: string | string[]): boolean =>
+    value !== undefined;
+
+  const sanitizedSearchParams: IDogSearchParams = Object.entries(
+    searchParams,
+  ).reduce(
+    (filteredSearchParams, [searchParam, value]) => {
+      if (!value) return filteredSearchParams;
+
+      if (isParamValid(searchParam) && isValueValid(value)) {
+        return { ...filteredSearchParams, [searchParam]: value };
+      }
+
+      return filteredSearchParams;
+    },
+    { sort: `breed:${ASCENDING}` },
+  );
+
+  return sanitizedSearchParams;
 }
 
 interface IGetCookieString {
