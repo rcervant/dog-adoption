@@ -168,6 +168,7 @@ Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by the cloud 
 ```bash
 DATABASE_URL=<mysql://{MYSQL_DB_USER}:{MYSQL_DB_PASSWORD}@{MY_SQL_DB_HOST}:{PORT}/{MYSQL_DB_NAME}>
 ```
+
 ### 3. Running the App
 
 You're now ready to run the app:
