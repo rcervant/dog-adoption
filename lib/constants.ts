@@ -41,7 +41,6 @@ export const DEFAULT_SEARCH_RADIUS_KM = 25;
 export const EARTH_RADIUS_KM = 6371;
 
 // valid search params
-
 export const BREEDS = "breeds";
 export const ZIPCODES = "zipCodes";
 export const AGE_MIN = "ageMin";
