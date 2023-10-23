@@ -4,7 +4,7 @@ import DogInfoSkeleton from "./DogInfoSkeleton";
 import DogResultsPageSkeleton from "./DogResultsPageSkeleton";
 import { NUM_DOGS_TO_DISPLAY } from "@/lib/constants";
 
-const DogPageSkeleton = () => {
+const DogProfileSkeleton = () => {
   return (
     <Container>
       <div className="mx-auto max-w-screen-lg">
@@ -18,4 +18,4 @@ const DogPageSkeleton = () => {
   );
 };
 
-export default DogPageSkeleton;
+export default DogProfileSkeleton;

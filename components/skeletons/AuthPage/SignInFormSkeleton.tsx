@@ -1,7 +1,7 @@
 import ButtonSkeleton from "../ButtonSkeleton";
 import InputSkeleton from "../InputSkeleton";
 import LabelSkeleton from "../LabelSkeleton";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/base/skeleton";
 
 const SignInFormSkeleton = () => {
   return (
