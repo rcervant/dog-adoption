@@ -4,7 +4,7 @@
   </a>
   <h4 align="center">Intuitive, customizable Dog Matching App</h4>
   <p align="center">
-    <a href="https://fetch-take-home-rcervant.vercel.app/"><strong>Product Website »</strong></a>
+    <a href="https://fetch-take-home-eight.vercel.app/"><strong>Product Website »</strong></a>
     <br><br>
     <a href="https://github.com/rcervant/fetch-take-home/issues">
       <img alt="GitHub issues" src="https://img.shields.io/github/issues/rcervant/fetch-take-home">
