@@ -22,7 +22,7 @@ const DogSearchPage = async ({
 
   const currentUser = await getCurrentUser();
   if (!currentUser) {
-    redirect(`${process.env.ORIGIN}${SIGN_IN_PATH}`);
+    redirect(`${process.env.NEXT_PUBLIC_ORIGIN}${SIGN_IN_PATH}`);
   }
 
   const sanitizedSearchParams = await getSanitizedSearchParams({

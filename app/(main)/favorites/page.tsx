@@ -7,10 +7,8 @@ import { redirect } from "next/navigation";
 
 const FavoriteDogsPage = async () => {
   const currentUser = await getCurrentUser();
-
   if (!currentUser) {
-    <EmptyState title="You have been logged out. Redirecting to sign in" />;
-    return redirect(`${process.env.ORIGIN}${SIGN_IN_PATH}`);
+    redirect(`${process.env.NEXT_PUBLIC_ORIGIN}${SIGN_IN_PATH}`);
   }
 
   const favoriteDogs = await getFavoriteDogs();
