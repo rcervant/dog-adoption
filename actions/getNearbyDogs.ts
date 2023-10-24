@@ -8,12 +8,12 @@ import getDogIdsMetaDataFromParams from "./getDogIdsMetaDataFromParams";
 // TODO: add search user radius
 const getNearbyDogs = async (zipCode: string) => {
   try {
-    if (!zipCode) return [];
-
-    const currentUser = (await getCurrentUser()) || null;
+    const currentUser = await getCurrentUser();
     if (!currentUser) throw new Error("No current user");
 
-    const locationsMetadata = (await getNearbyZipCodes({ zipCode })) || null;
+    if (!zipCode) return [];
+
+    const locationsMetadata = await getNearbyZipCodes({ zipCode });
     if (!locationsMetadata)
       throw new Error(`Could not fetch locationsMetadata`);
 
@@ -22,23 +22,21 @@ const getNearbyDogs = async (zipCode: string) => {
 
     const zipCodes = results.map((location) => location.zip_code);
 
-    const dogIdsMetadata =
-      (await getDogIdsMetaDataFromParams({
-        searchParams: {
-          zipCodes,
-        },
-        user: currentUser,
-      })) || null;
+    const dogIdsMetadata = await getDogIdsMetaDataFromParams({
+      searchParams: {
+        zipCodes,
+      },
+      user: currentUser,
+    });
     if (!dogIdsMetadata) throw new Error(`Could not fetch dogIdsMetadata`);
 
     const { resultIds } = dogIdsMetadata;
     if (!resultIds) throw new Error(`Could not fetch resultIds`);
 
-    const data =
-      (await getDogsById({
-        dogIdsToRetrieve: resultIds,
-        user: currentUser,
-      })) || null;
+    const data = await getDogsById({
+      dogIdsToRetrieve: resultIds,
+      user: currentUser,
+    });
     if (!data) throw new Error(`Could not fetch data`);
 
     return data;

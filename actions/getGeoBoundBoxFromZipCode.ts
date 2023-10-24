@@ -1,8 +1,9 @@
 import { DEFAULT_SEARCH_RADIUS_KM, SIGN_IN_PATH } from "@/lib/constants";
-import getCurrentUser from "./getCurrentUser";
-import { redirect } from "next/navigation";
-import { FetchLocation, GeoPoint } from "@/types";
 import { calculateBoundingBox } from "@/lib/server/utils";
+
+import getCurrentUser from "./getCurrentUser";
+import { FetchLocation, GeoPoint } from "@/types";
+import { redirect } from "next/navigation";
 
 interface IGetGeoBoundingBoxFromZipCode {
   zipCode: string;
@@ -23,21 +24,20 @@ const getGeoBoundBoxFromZipCode = async ({
   if (!ORIGIN) throw new Error("No origin");
 
   try {
-    const currentUser = (await getCurrentUser()) || null;
+    const currentUser = await getCurrentUser();
     if (!currentUser) redirect(`${ORIGIN}${SIGN_IN_PATH}`);
 
-    const res =
-      (await fetch(`${FETCH_API_URL}/locations`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: currentUser.session,
-        },
-        body: JSON.stringify([zipCode]),
-      })) || null;
+    const res = await fetch(`${FETCH_API_URL}/locations`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: currentUser.session,
+      },
+      body: JSON.stringify([zipCode]),
+    });
 
-    if (res === null) throw new Error("No response");
+    if (!res) throw new Error("No response");
 
     if (!res.ok) {
       throw new Error(
@@ -45,7 +45,7 @@ const getGeoBoundBoxFromZipCode = async ({
       );
     }
 
-    const [location] = ((await res.json()) as FetchLocation[]) || null;
+    const [location] = (await res.json()) as FetchLocation[];
     if (!location) throw new Error("No location");
 
     const { latitude, longitude } = location;
@@ -56,8 +56,7 @@ const getGeoBoundBoxFromZipCode = async ({
     } as GeoPoint;
 
     const radiusKm = searchRadius;
-    const boundingBox =
-      (await calculateBoundingBox(centerLocation, radiusKm)) || null;
+    const boundingBox = await calculateBoundingBox(centerLocation, radiusKm);
     if (!boundingBox) throw new Error("No bounding box");
 
     return boundingBox;

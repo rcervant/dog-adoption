@@ -21,13 +21,12 @@ const getCurrentUser = async () => {
 
     const emailLowerCased = email.toLowerCase();
 
-    const currentUser =
-      (await prisma.user.findUnique({
-        where: { email: emailLowerCased },
-        include: {
-          favorites: true,
-        },
-      })) || null;
+    const currentUser = await prisma.user.findUnique({
+      where: { email: emailLowerCased },
+      include: {
+        favorites: true,
+      },
+    });
     if (!currentUser) return null;
 
     const serializedUser: SerializableUser = {
