@@ -1,7 +1,8 @@
 "use server";
 
-import { cookies } from "next/headers";
 import getCurrentUser from "./getCurrentUser";
+
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 const signOut = async () => {
@@ -12,20 +13,19 @@ const signOut = async () => {
   if (!ORIGIN) throw new Error("No origin");
 
   try {
-    const currentUser = (await getCurrentUser()) || null;
-    if (!currentUser) return redirect(`${ORIGIN}/sign-in`);
+    const currentUser = await getCurrentUser();
+    if (!currentUser) redirect(`${ORIGIN}/sign-in`);
 
-    const res =
-      (await fetch(`${FETCH_API_URL}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: currentUser.session,
-        },
-      })) || null;
+    const res = await fetch(`${FETCH_API_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: currentUser.session,
+      },
+    });
 
-    if (res === null) throw new Error("No response");
+    if (!res) throw new Error("No response");
 
     if (!res.ok) {
       throw new Error(`Error in signOut: ${res.status} ${res.statusText}`);
