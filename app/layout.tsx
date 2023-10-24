@@ -1,4 +1,4 @@
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/base/toaster";
 import "./globals.css";
 import type { Metadata } from "next";
 
