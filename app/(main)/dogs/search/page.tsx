@@ -18,7 +18,7 @@ interface SearchProps {
 const DogSearchPage = async ({
   searchParams = { sort: ASCENDING },
 }: SearchProps) => {
-  if (searchParams) throw new Error("No search params found");
+  if (!searchParams) throw new Error("No search params found");
 
   const currentUser = await getCurrentUser();
   if (!currentUser) {
