@@ -12,7 +12,7 @@ const SearchLayout = async ({ children }: SearchLayoutProps) => {
 
   const currentUser = await getCurrentUser();
   if (!currentUser) {
-    return redirect(`${process.env.ORIGIN}${SIGN_IN_PATH}`);
+    redirect(`${process.env.NEXT_PUBLIC_ORIGIN}${SIGN_IN_PATH}`);
   }
 
   return (
