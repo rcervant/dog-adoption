@@ -1,7 +1,7 @@
-import DogPageSkeleton from "@/components/skeletons/DogPage/DogPageSkeleton";
+import DogProfileSkeleton from "@/components/skeletons/DogPage/DogProfileSkeleton";
 
 const SearchPageSkeleton = () => {
-  return <DogPageSkeleton />;
+  return <DogProfileSkeleton />;
 };
 
 export default SearchPageSkeleton;

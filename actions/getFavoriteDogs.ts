@@ -7,23 +7,21 @@ import getDogsById from "./getDogsById";
 // TODO: add pagination
 const getFavoriteDogs = async () => {
   try {
-    const currentUser = (await getCurrentUser()) || null;
+    const currentUser = await getCurrentUser();
     if (!currentUser) throw new Error("No current user");
 
-    const favorites =
-      (await prisma.favorite.findMany({
-        where: {
-          userId: currentUser.id,
-        },
-      })) || null;
+    const favorites = await prisma.favorite.findMany({
+      where: {
+        userId: currentUser.id,
+      },
+    });
     if (!favorites) throw new Error(`Could not fetch favorites`);
 
     const favoriteDogIds = favorites.map((favorite) => favorite.dogId);
-    const favoriteDogs =
-      (await getDogsById({
-        dogIdsToRetrieve: favoriteDogIds,
-        user: currentUser,
-      })) || null;
+    const favoriteDogs = await getDogsById({
+      dogIdsToRetrieve: favoriteDogIds,
+      user: currentUser,
+    });
     if (!favoriteDogs) throw new Error(`Could not fetch favoriteDogs`);
 
     return favoriteDogs;

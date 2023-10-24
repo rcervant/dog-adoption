@@ -168,6 +168,7 @@ Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by the cloud 
 ```bash
 DATABASE_URL=<mysql://{MYSQL_DB_USER}:{MYSQL_DB_PASSWORD}@{MY_SQL_DB_HOST}:{PORT}/{MYSQL_DB_NAME}>
 ```
+
 ### 3. Running the App
 
 You're now ready to run the app:
@@ -186,8 +187,9 @@ Let's explore the key features of the Dog Matching App:
 
 ### [Login Page](<https://github.com/rcervant/fetch-take-home/blob/main/app/(auth)/sign-in/page.tsx>)
 
-- Start by logging in with your name and email to access the app.
+- Start by signing up/logging in with your name and email to access the app.
 
+![sign-up-form](readmeAssets/img/register-form.png)
 ![sign-in-form](readmeAssets/img/sign-in-form.png)
 
 ### [Search Page](<https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/search/page.tsx>)

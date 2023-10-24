@@ -1,10 +1,13 @@
 import getCurrentUser from "@/actions/getCurrentUser";
 import getDogIdsMetaDataFromParams from "@/actions/getDogIdsMetaDataFromParams";
 import getDogsById from "@/actions/getDogsById";
+
 import Container from "@/components/Container";
-import InfiniteScrollDogs from "@/components/Dogs/InfiniteScrollDogs";
 import EmptyState from "@/components/EmptyState";
+import InfiniteScrollDogs from "@/app/(main)/dogs/search/_components/InfiniteScrollDogs";
+
 import { ASCENDING, SIGN_IN_PATH } from "@/lib/constants";
+import { getSanitizedSearchParams } from "@/lib/server/utils";
 import { redirect } from "next/navigation";
 
 interface SearchProps {
@@ -17,16 +20,21 @@ const DogSearchPage = async ({
 }: SearchProps) => {
   if (!searchParams) throw new Error("No search params found");
 
-  const currentUser = (await getCurrentUser()) || null;
+  const currentUser = await getCurrentUser();
   if (!currentUser) {
-    return redirect(`${process.env.ORIGIN}${SIGN_IN_PATH}`);
+    redirect(`${process.env.ORIGIN}${SIGN_IN_PATH}`);
   }
 
-  const dogIdsMetadata =
-    (await getDogIdsMetaDataFromParams({
-      searchParams,
-      user: currentUser,
-    })) || null;
+  const sanitizedSearchParams = await getSanitizedSearchParams({
+    searchParams,
+  });
+  if (!sanitizedSearchParams)
+    throw new Error("No sanitized search params found");
+
+  const dogIdsMetadata = await getDogIdsMetaDataFromParams({
+    searchParams: sanitizedSearchParams,
+    user: currentUser,
+  });
 
   if (!dogIdsMetadata) throw new Error("Id metadata not found");
 
@@ -36,11 +44,10 @@ const DogSearchPage = async ({
     return <EmptyState showReset />;
   }
 
-  const dogs =
-    (await getDogsById({
-      dogIdsToRetrieve: resultIds,
-      user: currentUser,
-    })) || null;
+  const dogs = await getDogsById({
+    dogIdsToRetrieve: resultIds,
+    user: currentUser,
+  });
 
   if (!dogs) throw new Error("No dogs retrieved");
 

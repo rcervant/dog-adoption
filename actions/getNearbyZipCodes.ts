@@ -1,8 +1,8 @@
 "use server";
 
+import { DEFAULT_SEARCH_RADIUS_KM } from "@/lib/constants";
 import { FetchLocationMetdata } from "@/types";
 import getCurrentUser from "./getCurrentUser";
-import { DEFAULT_SEARCH_RADIUS_KM } from "@/lib/constants";
 import getGeoBoundBoxFromZipCode from "./getGeoBoundBoxFromZipCode";
 
 interface ZipCodeParams {
@@ -21,14 +21,13 @@ const getNearbyZipCodes = async ({
   if (!ORIGIN) throw new Error("No origin");
 
   try {
-    const currentUser = (await getCurrentUser()) || null;
+    const currentUser = await getCurrentUser();
     if (!currentUser) return null;
 
-    const boundingBox =
-      (await getGeoBoundBoxFromZipCode({
-        zipCode,
-        searchRadius,
-      })) || null;
+    const boundingBox = await getGeoBoundBoxFromZipCode({
+      zipCode,
+      searchRadius,
+    });
 
     if (!boundingBox) return null;
 
@@ -39,18 +38,17 @@ const getNearbyZipCodes = async ({
       },
     };
 
-    const res =
-      (await fetch(`${FETCH_API_URL}/locations/search`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: currentUser.session,
-        },
-        body: JSON.stringify(geoBoundingBoxToSend),
-      })) || null;
+    const res = await fetch(`${FETCH_API_URL}/locations/search`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: currentUser.session,
+      },
+      body: JSON.stringify(geoBoundingBoxToSend),
+    });
 
-    if (res === null) throw new Error("No response");
+    if (!res) throw new Error("No response");
 
     if (!res.ok) {
       throw new Error(
@@ -58,7 +56,7 @@ const getNearbyZipCodes = async ({
       );
     }
 
-    const data = ((await res.json()) as FetchLocationMetdata) || null;
+    const data = (await res.json()) as FetchLocationMetdata;
     return data;
   } catch (error: any) {
     throw new Error(error);

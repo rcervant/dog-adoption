@@ -6,7 +6,7 @@ import { SerializableUser } from "@/types";
 import { favoriteDog, unfavoriteDog } from "@/actions/favoriteDog";
 import { useThrottle } from "./useThrottle";
 import { SIGN_IN_PATH, THROTTLE_FAV_TIME } from "@/lib/constants";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/base/use-toast";
 import signOut from "@/actions/signOut";
 
 interface IUseFavorite {
@@ -49,7 +49,7 @@ const useFavorite = ({ dogId, currentUser }: IUseFavorite) => {
       }
 
       if (!hasFavorited) {
-        const res = (await favoriteDog({ dogIdToFavorite: dogId })) || null;
+        const res = await favoriteDog({ dogIdToFavorite: dogId });
         if (!res) {
           throw new Error("Something went wrong.");
         }
@@ -63,7 +63,7 @@ const useFavorite = ({ dogId, currentUser }: IUseFavorite) => {
           description: "You can view your favorites on your profile page.",
         });
       } else {
-        const res = (await unfavoriteDog({ dogIdToUnfavorite: dogId })) || null;
+        const res = await unfavoriteDog({ dogIdToUnfavorite: dogId });
         if (!res) {
           throw new Error("Something went wrong.");
         }

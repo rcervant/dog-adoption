@@ -19,24 +19,23 @@ const getDogIdsMetaDataFromParams = async (
     if (!user) throw new Error("No current user");
     if (!searchParams) throw new Error("No search params");
 
-    const query = (await getQueryFromSearchParams(searchParams)) || "";
+    const query = await getQueryFromSearchParams(searchParams);
 
     const FETCH_API_URL = process.env.NEXT_PUBLIC_FETCH_API_URL;
     if (!FETCH_API_URL) throw new Error("No fetch api url");
 
     const url = `${FETCH_API_URL}/dogs/search?${query}`;
 
-    const res =
-      (await fetch(url, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: user.session,
-        },
-      })) || null;
+    const res = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: user.session,
+      },
+    });
 
-    if (res === null) throw new Error("No response");
+    if (!res) throw new Error("No response");
 
     if (!res.ok) {
       throw new Error(
@@ -44,7 +43,7 @@ const getDogIdsMetaDataFromParams = async (
       );
     }
 
-    const data = ((await res.json()) as DogIdsMetadata) || null;
+    const data = (await res.json()) as DogIdsMetadata;
     if (!data) throw new Error("No data");
 
     return data;

@@ -1,11 +1,9 @@
-"use client";
-
-import { PuffLoader } from "react-spinners";
+import { Spinner } from "@/components/Spinner";
 
 const Loader = () => {
   return (
     <div className="flex h-[70vh] flex-col items-center justify-center ">
-      <PuffLoader size={100} color="purple" />
+      <Spinner size="xlIcon" />
     </div>
   );
 };

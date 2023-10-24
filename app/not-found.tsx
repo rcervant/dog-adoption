@@ -1,5 +1,5 @@
 import EmptyState from "@/components/EmptyState";
-import BareBonesNavBar from "@/components/Navbar/BareBonesNavBar";
+import BareBonesNavBar from "@/app/(main)/_components/Navbar/BareBonesNavBar";
 
 export default function NotFound() {
   return (

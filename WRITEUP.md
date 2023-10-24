@@ -189,10 +189,10 @@ In a previous iteration of the application, page navigation buttons labeled `pre
 
 The implementation of form validation within Shadcn UI dialog components posed its own set of challenges:
 
-- Shadcn UI dialog components encountered issues when integrated with forms from React Hook Form as children within dialog components. To circumvent these limitations, components that were typically standalone were redefined inline within the dialog. This approach was imperative in addressing the issue, as observed in a similar GitHub [issue](https://github.com/shadcn-ui/ui/issues/709).
-  - The trade-off was an expansion of component length ([SignInForm](https://github.com/rcervant/fetch-take-home/blob/main/components/SignInForm.tsx), [SearchDialog](https://github.com/rcervant/fetch-take-home/blob/main/components/dogSearchModal/SearchDialog.tsx)). This decision was made to ensure meticulous form validation and error handling. The alternative was to allow form submission without validation. The chosen approach prioritized user experience over modularity in the components.
+- Shadcn UI dialog components encountered issues when integrated with forms from React Hook Form as children within dialog components. To circumvent these limitations, components that were typically standalone were redefined inline within the dialog. This approach was imperative in addressing the issue, as observed in a similar GitHub [issue](https://github.com/shadcn-ui/base/issues/709).
+  - The trade-off was an expansion of component length ([SignInForm](https://github.com/rcervant/fetch-take-home/blob/main/components/SignInForm.tsx), [SearchDialog](https://github.com/rcervant/fetch-take-home/blob/main/components/dogSearchModal/SearchDialog.tsx)). This decision was made to ensure meticulous form validation and error handling. The alternative was to allow form submission without validation with react-hook-form and zod. The chosen approach prioritized user experience over modularity in the components.
 
-## **Effective Workarounds <a name="circumvented-instructions"></a>**
+## **Effective Workarounds <a name="effective-workarounds"></a>**
 
 To address the challenges encountered during the development of the Dog Matching App, the following workarounds were diligently implemented:
 
