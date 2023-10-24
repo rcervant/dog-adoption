@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Heading from "./Heading";
-import { ChevronLeft, Home } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { Button } from "./base/button";
 
 interface EmptyStateProps {
