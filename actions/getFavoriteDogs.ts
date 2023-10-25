@@ -17,6 +17,8 @@ const getFavoriteDogs = async () => {
     });
     if (!favorites) throw new Error(`Could not fetch favorites`);
 
+    if (favorites.length === 0) return [];
+
     const favoriteDogIds = favorites.map((favorite) => favorite.dogId);
     const favoriteDogs = await getDogsById({
       dogIdsToRetrieve: favoriteDogIds,
