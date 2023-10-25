@@ -5,8 +5,12 @@ import getCurrentUser from "./getCurrentUser";
 import getDogsById from "./getDogsById";
 import getDogIdsMetaDataFromParams from "./getDogIdsMetaDataFromParams";
 
+interface IGetNearbyDogs {
+  zipCode: string;
+  dogId: string;
+}
 // TODO: add search user radius
-const getNearbyDogs = async (zipCode: string) => {
+const getNearbyDogs = async ({ zipCode, dogId }: IGetNearbyDogs) => {
   try {
     const currentUser = await getCurrentUser();
     if (!currentUser) throw new Error("No current user");
@@ -33,13 +37,15 @@ const getNearbyDogs = async (zipCode: string) => {
     const { resultIds } = dogIdsMetadata;
     if (!resultIds) throw new Error(`Could not fetch resultIds`);
 
-    const data = await getDogsById({
+    const nearbyDogs = await getDogsById({
       dogIdsToRetrieve: resultIds,
       user: currentUser,
     });
-    if (!data) throw new Error(`Could not fetch data`);
+    if (!nearbyDogs) throw new Error(`Could not fetch nearbyDogs`);
 
-    return data;
+    const filteredNearbyDogs = nearbyDogs.filter((dog) => dog.id !== dogId);
+
+    return filteredNearbyDogs;
   } catch (error: any) {
     console.error(error);
     throw new Error(error);
