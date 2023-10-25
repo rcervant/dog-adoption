@@ -1,5 +1,3 @@
-"use client";
-
 import Heading from "@/components/Heading";
 
 interface DogInfoProps {
