@@ -1,12 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { SerializableUser } from "@/types";
-import Heading from "@/components/Heading";
-import HeartButton from "./HeartButton";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+
+import HeartButton from "./HeartButton";
+import Heading from "@/components/Heading";
 import { Button } from "@/components/base/button";
+import { ChevronLeft } from "lucide-react";
 
 interface DogHeadProps {
   name: string;

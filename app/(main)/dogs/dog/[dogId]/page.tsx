@@ -1,9 +1,10 @@
 import getCurrentUser from "@/actions/getCurrentUser";
 import getDogsById from "@/actions/getDogsById";
-import getNearbyDogs from "@/actions/getNearbyDogs";
-import DogClient from "@/app/(main)/dogs/_components/DogProfile";
+
 import { SIGN_IN_PATH } from "@/lib/constants";
 import { redirect } from "next/navigation";
+
+import DogProfile from "@/app/(main)/dogs/_components/DogProfile";
 
 interface DogPageParams {
   params: { dogId: string };
@@ -29,19 +30,9 @@ const DogPage = async ({ params }: DogPageParams) => {
     throw new Error("No dog found");
   }
 
-  const nearbyDogs = await getNearbyDogs(dog.zip_code);
-
   return (
     <>
-      {nearbyDogs && nearbyDogs.length !== 0 ? (
-        <DogClient
-          dog={dog}
-          currentUser={currentUser}
-          nearbyDogs={nearbyDogs}
-        />
-      ) : (
-        <DogClient dog={dog} currentUser={currentUser} />
-      )}
+      <DogProfile dog={dog} />
     </>
   );
 };
