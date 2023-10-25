@@ -24,6 +24,7 @@
 - [About the Dog Matching App](#about)
 - [Features](#features)
 - [Getting Started](#getting-started)
+- [User Guide](#user-guide)
 
 ---
 
@@ -75,9 +76,16 @@ Discover furry friends within a 25km radius of the current dog for potential pla
 
 ## Getting Started with the Dog Matching App ⬆️
 
+### Table of Contents 🗺️
+
 Getting started with the Dog Matching App is simple. Just follow these steps:
 
-### 1. Install Dependencies
+- [Install ](#install)
+- [Setting Up the Database](#db-setup)
+- [Running the App](#running-app)
+- [Troubleshooting](#troubleshooting)
+
+### 1. Install Dependencies <a name="install"></a>
 
 Make sure you have Node.js (v18.7+) installed on your machine. Then, proceed to install the project dependencies by running the following command:
 
@@ -107,7 +115,7 @@ NEXT_PUBLIC_FETCH_API_URL=<FOUND IN EXERCISE INSTRUCTIONS>
 DATABASE_URL=
 ```
 
-### 2. Setting Up the Database
+### 2. Setting Up the Database <a name="db-setup"></a>
 
 You have two options for setting up the database:
 
@@ -169,7 +177,9 @@ Replace the **`DATABASE_URL`** in **`.env`** with the URL provided by the cloud 
 DATABASE_URL=<mysql://{MYSQL_DB_USER}:{MYSQL_DB_PASSWORD}@{MY_SQL_DB_HOST}:{PORT}/{MYSQL_DB_NAME}>
 ```
 
-### 3. Running the App
+<a name="running-app"></a>
+
+### 3. Running the App <a name="running-app"></a>
 
 You're now ready to run the app:
 
@@ -178,6 +188,10 @@ npm run dev
 ```
 
 The app will be accessible at [http://localhost:3000](http://localhost:3000/) in your web browser.
+
+### 4. Troubleshooting <a name="troubleshooting"></a>
+
+Troubleshooting tips for common issues can be found here: [Troubleshooting](https://github.com/rcervant/fetch-take-home/blob/main/WRITEUP.md#troubleshooting-)
 
 ---
 
