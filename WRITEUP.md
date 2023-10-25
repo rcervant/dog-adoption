@@ -170,9 +170,8 @@ The following design choices were made for the Dog Matching App:
 ### **Components**
 
 - **File Structure**: The app's components are organized into a folder structure that reflects the app's routes. This approach facilitates the identification of components and their respective routes.
-Common components are stored in the `components` folder, while components specific to a route are stored in the route's folder as described by Vercel [here](https://nextjs.org/docs/app/building-your-application/routing/colocation#split-project-files-by-feature-or-route)
+  Common components are stored in the `components` folder, while components specific to a route are stored in the route's folder as described by Vercel [here](https://nextjs.org/docs/app/building-your-application/routing/colocation#split-project-files-by-feature-or-route)
   - _Alternative Considered_: An alternative approach could have been to organize components by type. However, this approach was not chosen as it would have made it more difficult to identify components and their respective routes.
-
 
 ## **Challenges Encountered and Resolutions <a name="challenges-issues-encountered"></a>**
 
@@ -187,7 +186,7 @@ The application required user credentials for [user creation](https://github.com
 
 ### **Transition to Infinite Scrolling**
 
-In a previous iteration of the application, page navigation buttons labeled `prev` and `next` were employed to append the `prev` and `next` URLs from the server's response to the router stack. This approach, while simpler, mandated a complete page refresh to retrieve the next page's data. This resulted in a suboptimal user experience, as it required multiple clicks on the browser's back button and waiting for the dogs to load. Consequently, a transition to [Infinite scrolling](https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/search/_components/InfiniteScrollDogs.tsx) was initiated. This transformation introduced specific challenges:
+In a previous iteration of the application, page navigation buttons labeled `prev` and `next` were employed to append the `prev` and `next` URLs from the server's response to the router stack. This approach, while simpler, mandated a complete page refresh to retrieve the next page's data. This resulted in a suboptimal user experience, as it required multiple clicks on the browser's back button and waiting for the dogs to load. Consequently, a transition to [Infinite scrolling](<https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/search/_components/InfiniteScrollDogs.tsx>) was initiated. This transformation introduced specific challenges:
 
 - Initially, the dogs for the first page were fetched server-side, but subsequent pages relied on client-side fetching. This divergence raised peculiarities when making calls from the client. Most notably, the logic for handling API data was primarily developed server-side. To maintain consistency and avoid duplicating logic on the client, Next.js 13 server actions were employed. The challenge was further intensified as the logic for constructing requests to Fetch's API for dog retrieval was previously managed within the [SearchPage](<https://github.com/rcervant/fetch-take-home/blob/main/app/(main)/dogs/search/page.tsx>) server component. This added complexity when making client fetches, as search parameters were no longer automatically parsed. A callback was required to manually adapt the search parameters to the server action's structure. This approach allowed fetch calls to be seamlessly chained from client to server for retrieving the next page's data, mirroring the process used for the initial server-side retrieval.
 - Triggering the next page's data retrieval necessitated the utilization of a reference (ref) to the last element on the page. The ref was instrumental in identifying when the user scrolled to the page's bottom, prompting the retrieval of the next page's data. This functionality was implemented by harnessing the IntersectionObserver API. This method ensured that the ref would be monitored, and the retrieval of the next page's data would be triggered once the ref became visible. This approach considerably improved the user experience, as the next page's data was fetched before the user reached the page's bottom. Nevertheless, this method introduced complexities, as the ref needed to be visible to initiate the fetch. This risked continuous calls to the API while the ref was visible. To address this, a [debouncing](https://github.com/rcervant/fetch-take-home/blob/main/lib/client/utils.ts) mechanism was implemented for the `loadMoreDogs` function. Additionally, the `useEffect` hook was leveraged to return a cleanup function that cleared the ref when the component was unmounted.
@@ -309,6 +308,56 @@ If you encounter issues with this command, try the following steps:
    ```bash
    docker run --name fetch_take_home_db -p 3307:3306 -e MYSQL_ROOT_PASSWORD=password -v ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql mysql
    ```
+
+5. **Container Name Conflict**: If you already have a container named **`fetch_take_home_db`**, you can change the container name in the **`docker run`** command to use a different name, such as **`fetch_take_home_db_2`**:
+
+   ```bash
+   docker run --name fetch_take_home_db_2 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -v ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql mysql
+   ```
+
+### **Prisma Setup**
+
+During the Prisma setup, the app runs a script runs the following commands expecting certain outputs from the prisma CLI:
+
+```bash
+expect -c 'spawn npx prisma migrate dev;
+```
+
+This command runs the prisma migrate dev command and expects the following outputs:
+
+```bash
+expect "Do you want to continue? All data will be lost." { send "yes\r"; exp_continue }
+```
+
+This command expects the user to type 'yes' to continue with the migration.
+
+```bash
+expect "Enter a name for the new migration:" { send "init\r"; interact }'
+```
+
+This command expects the user to type 'init' as the name for the new migration.
+
+If you encounter issues with this command, try the following steps:
+
+1. **Prisma Installation**: Ensure that Prisma is properly installed on your machine. You can install it globally with the following command:
+
+   ```bash
+   npm install -g prisma
+   ```
+
+2. **Prisma CLI**: Ensure that you have the latest version of the Prisma CLI installed. You can update it with the following command:
+
+   ```bash
+    npm install -g prisma@latest
+   ```
+
+3. **Prisma Schema**: Ensure that you have a **`schema.prisma`** file in the **`prisma`** folder. If you don't have one, you can create it with the following command:
+
+   ```bash
+   npx prisma init
+   ```
+
+   This command will create a **`schema.prisma`** file in the **`prisma`** folder. As well as create a **`.env`** file in the root directory.
 
 ### **Troubleshooting App Issues**
 

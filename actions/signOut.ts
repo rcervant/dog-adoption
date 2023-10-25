@@ -1,6 +1,6 @@
 "use server";
 
-import { SIGN_IN_PATH } from '@/lib/constants';
+import { SIGN_IN_PATH } from "@/lib/constants";
 import getCurrentUser from "./getCurrentUser";
 
 import { cookies } from "next/headers";

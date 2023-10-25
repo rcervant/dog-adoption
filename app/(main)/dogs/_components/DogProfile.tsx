@@ -3,8 +3,7 @@ import DogHead from "@/app/(main)/_components/Dogs/DogHead";
 import { Dog } from "@/types";
 import Container from "@/components/Container";
 import NearbyDogs from "./NearbyDogs";
-import getCurrentUser from '@/actions/getCurrentUser';
-import getNearbyDogs from '@/actions/getNearbyDogs';
+import getCurrentUser from "@/actions/getCurrentUser";
 
 interface DogProfileProps {
   dog: Dog;
@@ -28,7 +27,7 @@ const DogProfile = async ({ dog }: DogProfileProps) => {
   } of wisdom and ${
     vowels.includes(breed[0].toLowerCase()) ? "an" : "a"
   } ${breed} pedigree, this pup is ready to embark on a new adventure by your side. Whether you're seeking a loyal companion for long walks, cuddles on the couch, or a partner in play, ${name} is up for the challenge.`;
-  
+
   return (
     <Container>
       <div className="mx-auto max-w-screen-lg">
