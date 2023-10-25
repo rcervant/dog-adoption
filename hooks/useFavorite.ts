@@ -8,6 +8,7 @@ import { useThrottle } from "./useThrottle";
 import { SIGN_IN_PATH, THROTTLE_FAV_TIME } from "@/lib/constants";
 import { useToast } from "@/components/base/use-toast";
 import signOut from "@/actions/signOut";
+import getCurrentUser from "@/actions/getCurrentUser";
 
 interface IUseFavorite {
   dogId: string;
@@ -34,12 +35,8 @@ const useFavorite = ({ dogId, currentUser }: IUseFavorite) => {
       e.stopPropagation();
     }
 
-    if (!currentUser) {
-      router.push(SIGN_IN_PATH);
-      return null;
-    }
-
     try {
+      const currentUser = await getCurrentUser();
       if (!currentUser) {
         toast({
           title: "Signed out!",
