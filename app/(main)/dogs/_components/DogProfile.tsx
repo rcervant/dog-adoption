@@ -1,18 +1,17 @@
-"use client";
-
-import { Dog, SerializableUser } from "@/types";
+import DogInfo from "@/app/(main)/_components/Dogs/DogInfo";
+import DogHead from "@/app/(main)/_components/Dogs/DogHead";
+import { Dog } from "@/types";
 import Container from "@/components/Container";
-import DogInfo from "../../_components/Dogs/DogInfo";
-import DogHead from "../../_components/Dogs/DogHead";
 import NearbyDogs from "./NearbyDogs";
+import getCurrentUser from '@/actions/getCurrentUser';
+import getNearbyDogs from '@/actions/getNearbyDogs';
 
 interface DogProfileProps {
   dog: Dog;
-  currentUser?: SerializableUser | null;
-  nearbyDogs?: Dog[];
 }
 
-const DogProfile = ({ dog, currentUser, nearbyDogs }: DogProfileProps) => {
+const DogProfile = async ({ dog }: DogProfileProps) => {
+  const currentUser = await getCurrentUser();
   if (!currentUser) {
     return null;
   }
@@ -29,7 +28,7 @@ const DogProfile = ({ dog, currentUser, nearbyDogs }: DogProfileProps) => {
   } of wisdom and ${
     vowels.includes(breed[0].toLowerCase()) ? "an" : "a"
   } ${breed} pedigree, this pup is ready to embark on a new adventure by your side. Whether you're seeking a loyal companion for long walks, cuddles on the couch, or a partner in play, ${name} is up for the challenge.`;
-
+  
   return (
     <Container>
       <div className="mx-auto max-w-screen-lg">
@@ -52,9 +51,7 @@ const DogProfile = ({ dog, currentUser, nearbyDogs }: DogProfileProps) => {
         </div>
       </div>
       <div className="mt-10">
-        {nearbyDogs && nearbyDogs.length > 0 && (
-          <NearbyDogs nearbyDogs={nearbyDogs} currentUser={currentUser} />
-        )}
+        <NearbyDogs zipCode={zip_code} dogId={id} />
       </div>
     </Container>
   );
