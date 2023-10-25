@@ -1,5 +1,6 @@
 "use server";
 
+import { SIGN_IN_PATH } from '@/lib/constants';
 import getCurrentUser from "./getCurrentUser";
 
 import { cookies } from "next/headers";
@@ -14,7 +15,7 @@ const signOut = async () => {
 
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser) redirect(`${ORIGIN}/sign-in`);
+    if (!currentUser) redirect(`${ORIGIN}${SIGN_IN_PATH}`);
 
     const res = await fetch(`${FETCH_API_URL}/auth/logout`, {
       method: "POST",

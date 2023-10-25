@@ -1,24 +1,15 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import Container from "@/components/Container";
 import DogInfo from "@/app/(main)/_components/Dogs/DogInfo";
 import DogHead from "@/app/(main)/_components/Dogs/DogHead";
 import Heading from "@/components/Heading";
-import { SIGN_IN_PATH } from "@/lib/constants";
+import Container from "@/components/Container";
 import { Dog, SerializableUser } from "@/types";
 
 interface DogMatchProps {
   dogMatch: Dog;
-  currentUser?: SerializableUser | null;
+  currentUser: SerializableUser;
 }
 
 const DogMatch = ({ dogMatch, currentUser }: DogMatchProps) => {
-  const router = useRouter();
-  if (!currentUser) {
-    router.push(SIGN_IN_PATH);
-  }
-
   const { name, img, age, id, zip_code, breed } = dogMatch;
 
   return (
