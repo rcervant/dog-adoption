@@ -1,6 +1,5 @@
 import getCurrentUser from "@/actions/getCurrentUser";
 import getDogsById from "@/actions/getDogsById";
-import getNearbyDogs from "@/actions/getNearbyDogs";
 
 import { SIGN_IN_PATH } from "@/lib/constants";
 import { redirect } from "next/navigation";
