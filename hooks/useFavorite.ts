@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { SerializableUser } from "@/types";
 import { favoriteDog, unfavoriteDog } from "@/actions/favoriteDog";
 import { useThrottle } from "./useThrottle";
-import { SIGN_IN_PATH, THROTTLE_FAV_TIME } from "@/lib/constants";
+import { THROTTLE_FAV_TIME } from "@/lib/constants";
 import { useToast } from "@/components/base/use-toast";
 import signOut from "@/actions/signOut";
 import getCurrentUser from "@/actions/getCurrentUser";
